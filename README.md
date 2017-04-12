@@ -1,6 +1,8 @@
 ## OBS-SC2Switcher
 
-Installation: Move sc2switcher.dll into your obs-studio/obs-plugins/64bit directory 
+[Download](https://github.com/leigholiver/OBS-SC2Switcher/releases/download/0.1/sc2switcher.dll)
+
+Installation: Move sc2switcher.dll into your `obs-studio/obs-plugins/64bit` directory 
 
 #### If you use a separate PC to stream: 
 Enter the IP address of your SC2 computer in the SC2 PC IP box.
