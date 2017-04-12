@@ -1,5 +1,7 @@
 ## OBS-SC2Switcher
 
+[https://github.com/leigholiver/OBS-SC2Switcher/releases/download/0.1/sc2switcher.dll](Download)
+
 Installation: Move sc2switcher.dll into your obs-studio/obs-plugins/64bit directory 
 
 #### If you use a separate PC to stream: 
