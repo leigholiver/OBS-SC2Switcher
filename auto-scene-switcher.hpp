@@ -21,9 +21,8 @@ public:
 	std::unique_ptr<Ui_SceneSwitcher> ui;
 	SceneSwitcher(QWidget *parent);
 	void closeEvent(QCloseEvent *event) override;
-	void switchEvent();
 
-public slots:
+	public slots:
 	void on_inGameScene_currentTextChanged(const QString &name);
 	void on_outGameScene_currentTextChanged(const QString &name);
 	void on_ipAddr_textChanged(const QString &name);
