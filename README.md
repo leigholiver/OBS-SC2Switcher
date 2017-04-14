@@ -1,6 +1,6 @@
 ## OBS-SC2Switcher
 
-[Download](https://github.com/leigholiver/OBS-SC2Switcher/releases/download/0.3/sc2switcher.zip)
+[Download](https://github.com/leigholiver/OBS-SC2Switcher/releases/download/0.4/sc2switcher.zip)
 
 Installation: Extract sc2switcher.dll into your `obs-studio/obs-plugins/64bit` directory 
 
