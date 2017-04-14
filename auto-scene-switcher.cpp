@@ -30,7 +30,6 @@ struct SwitcherData {
 	void Start();
 	void Stop();
 	void api_callback();
-	void game_callback();
 
 	OBSWeakSource inGameScene;
 	OBSWeakSource outGameScene;
@@ -172,7 +171,7 @@ void SwitcherData::api_callback() {
 	// this is disgusting but im just prototyping and i kinda dont really need to go
 	// through the hassle of working out json parsing libraries #SorryNotSorry
 	// ill fix this when i add the replay scene option
-	if (UIResponse == "{\"activeScreens\":[]}" || (UIResponse == "{\"activeScreens\":[\"ScreenLoading/ScreenLoading\"]}" && !inGame))
+	if (UIResponse == "{\"activeScreens\":[]}" || UIResponse == "{\"activeScreens\":[\"ScreenLoading/ScreenLoading\"]}")
 	{
 		switcher->apiInGame = true;
 	}
@@ -189,14 +188,7 @@ void SwitcherData::api_callback() {
 
 }
 
-
-void SwitcherData::game_callback() {
-
-}
-
-
 void SwitcherData::Thread() {
-
 	chrono::duration<long long, milli> duration =
 		chrono::milliseconds(interval);
 
