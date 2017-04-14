@@ -3,6 +3,7 @@
 [Download](https://github.com/leigholiver/OBS-SC2Switcher/releases/download/0.4/sc2switcher.zip)
 
 Installation: Extract the obs-plugins folder into your `obs-studio/obs-plugins` directory 
+
 Usage: Go to Tools -> SC2 Scene Switcher and select a scene to switch to for in game/out of game/in replay. 
 
 #### If you use a separate PC to stream: 
