@@ -1,4 +1,4 @@
-## OBS-SC2Switcher
+## OBS SC2 Scene Switcher
 
 [Download](https://github.com/leigholiver/OBS-SC2Switcher/releases/download/0.4/sc2switcher.zip)
 
