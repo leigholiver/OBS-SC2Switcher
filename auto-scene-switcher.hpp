@@ -25,6 +25,7 @@ public:
 	public slots:
 	void on_inGameScene_currentTextChanged(const QString &name);
 	void on_outGameScene_currentTextChanged(const QString &name);
+	void on_replayScene_currentTextChanged(const QString& text);
 	void on_ipAddr_textChanged(const QString &name);
 	void on_toggleStartButton_clicked();
 };

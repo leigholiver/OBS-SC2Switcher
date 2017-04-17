@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>275</width>
-    <height>252</height>
+    <width>268</width>
+    <height>287</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>70</y>
+     <y>110</y>
      <width>111</width>
      <height>31</height>
     </rect>
@@ -29,7 +29,7 @@
   <widget class="QComboBox" name="inGameScene">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>110</x>
      <y>10</y>
      <width>141</width>
      <height>22</height>
@@ -39,7 +39,7 @@
   <widget class="QComboBox" name="outGameScene">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>110</x>
      <y>40</y>
      <width>141</width>
      <height>22</height>
@@ -49,7 +49,7 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>30</x>
      <y>10</y>
      <width>81</width>
      <height>21</height>
@@ -62,7 +62,7 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>10</x>
      <y>40</y>
      <width>101</width>
      <height>20</height>
@@ -76,7 +76,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>140</y>
+     <y>180</y>
      <width>101</width>
      <height>16</height>
     </rect>
@@ -89,7 +89,7 @@
    <property name="geometry">
     <rect>
      <x>120</x>
-     <y>140</y>
+     <y>180</y>
      <width>141</width>
      <height>20</height>
     </rect>
@@ -99,7 +99,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>170</y>
+     <y>210</y>
      <width>261</width>
      <height>61</height>
     </rect>
@@ -115,7 +115,7 @@
    <property name="geometry">
     <rect>
      <x>160</x>
-     <y>220</y>
+     <y>260</y>
      <width>81</width>
      <height>20</height>
     </rect>
@@ -131,13 +131,36 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>120</y>
+     <y>160</y>
      <width>221</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
     <string>If SC2 is running on a different PC:  (optional)</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>70</y>
+     <width>71</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Replay Scene:</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="replayScene">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>70</y>
+     <width>141</width>
+     <height>22</height>
+    </rect>
    </property>
   </widget>
  </widget>
