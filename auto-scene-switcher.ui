@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>268</width>
-    <height>287</height>
+    <height>289</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -75,8 +75,8 @@
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>180</y>
+     <x>10</x>
+     <y>190</y>
      <width>101</width>
      <height>16</height>
     </rect>
@@ -88,8 +88,8 @@
   <widget class="QLineEdit" name="ipAddr">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>180</y>
+     <x>110</x>
+     <y>190</y>
      <width>141</width>
      <height>20</height>
     </rect>
@@ -101,11 +101,11 @@
      <x>10</x>
      <y>210</y>
      <width>261</width>
-     <height>61</height>
+     <height>71</height>
     </rect>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;On your SC2 PC, open the Battle.net launcher, click Options, Game Settings, and under SC2, check 'Additional Command Line Arguments', and paste the following into the textbox:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;On your SC2 PC, open the Battle.net launcher, select SC2, click Options, Game Settings, and under SC2, check 'Additional Command Line Arguments', and paste this into the textbox:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -131,10 +131,16 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>160</y>
-     <width>221</width>
+     <y>170</y>
+     <width>261</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
    </property>
    <property name="text">
     <string>If SC2 is running on a different PC:  (optional)</string>
@@ -161,6 +167,19 @@
      <width>141</width>
      <height>22</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>7</x>
+     <y>160</y>
+     <width>251</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
    </property>
   </widget>
  </widget>

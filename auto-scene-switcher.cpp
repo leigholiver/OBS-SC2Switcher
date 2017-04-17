@@ -39,7 +39,7 @@ struct SwitcherData {
 	bool inReplay = false;
 	bool apiInGame = false;
 	bool apiInReplay = false;
-	int interval = 3000;
+	int interval = 1500;
 
 	inline SwitcherData() {
 		curl_global_init(CURL_GLOBAL_DEFAULT);
@@ -134,8 +134,8 @@ void SwitcherData::api_callback() {
 		reqURL = "http://" + reqURL + ":6119/ui";
 
 		curl_easy_setopt(curl, CURLOPT_URL, reqURL.c_str());
-		curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 1L);
-		curl_easy_setopt(curl, CURLOPT_TIMEOUT, 1L);
+		curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT_MS, 500);
+		curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 500);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &UIResponse);
 		res = curl_easy_perform(curl);
@@ -156,8 +156,8 @@ void SwitcherData::api_callback() {
 		reqURL = "http://" + reqURL + ":6119/game";
 
 		curl_easy_setopt(curl, CURLOPT_URL, reqURL.c_str());
-		curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 1L);
-		curl_easy_setopt(curl, CURLOPT_TIMEOUT, 1L);
+		curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT_MS, 500);
+		curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 500);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &gameResponse);
 		res = curl_easy_perform(curl);
@@ -219,9 +219,14 @@ void SwitcherData::Thread() {
 			}
 		}
 
-		if (switcher->inGame && switcher->apiInReplay) {
+		if (switcher->inGame && switcher->apiInReplay && !switcher->inReplay) {
 			switcher->inReplay = true;
 			scene = switcher->replayScene;
+		}
+		
+		if (switcher->inGame && !switcher->apiInReplay && switcher->inReplay) {
+			switcher->inReplay = false;
+			scene = switcher->inGameScene;
 		}
 
 		if (scene) {
