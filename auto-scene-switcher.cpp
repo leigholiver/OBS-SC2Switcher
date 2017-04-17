@@ -15,7 +15,6 @@
 #include <thread>
 #include <regex>
 #include <mutex>
-#include <string.h>
 
 using namespace std;
 
@@ -33,12 +32,9 @@ struct SwitcherData {
 
 	OBSWeakSource inGameScene;
 	OBSWeakSource outGameScene;
-	OBSWeakSource replayScene;
 	string ipAddr;
 	bool inGame = false;
-	bool inReplay = false;
 	bool apiInGame = false;
-	bool apiInReplay = false;
 	int interval = 3000;
 
 	inline SwitcherData() {
@@ -86,22 +82,17 @@ SceneSwitcher::SceneSwitcher(QWidget *parent)
 	ui->setupUi(this);
 	lock_guard<mutex> lock(switcher->m);
 
-	ui->inGameScene->addItem("");
-	ui->outGameScene->addItem("");
-	ui->replayScene->addItem("");
 	BPtr<char*> scenes = obs_frontend_get_scene_names();
 	char **temp = scenes;
 	while (*temp) {
 		const char *name = *temp;
 		ui->inGameScene->addItem(name);
 		ui->outGameScene->addItem(name);
-		ui->replayScene->addItem(name);
 		temp++;
 	}
 
 	ui->inGameScene->setCurrentText(GetWeakSourceName(switcher->inGameScene).c_str());
 	ui->outGameScene->setCurrentText(GetWeakSourceName(switcher->outGameScene).c_str());
-	ui->replayScene->setCurrentText(GetWeakSourceName(switcher->replayScene).c_str());
 	ui->ipAddr->setText(QString::fromStdString(switcher->ipAddr));
 
 	if (switcher->th.joinable()) {
@@ -123,7 +114,7 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
 void SwitcherData::api_callback() {
 	CURL *curl;
 	CURLcode res;
-	std::string UIResponse;
+	std::string responseFromServer;
 
 	curl = curl_easy_init();
 	if (curl) {
@@ -134,68 +125,36 @@ void SwitcherData::api_callback() {
 		reqURL = "http://" + reqURL + ":6119/ui";
 
 		curl_easy_setopt(curl, CURLOPT_URL, reqURL.c_str());
-		curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 1L);
-		curl_easy_setopt(curl, CURLOPT_TIMEOUT, 1L);
+		curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 10L);
+		curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10L);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &UIResponse);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &responseFromServer);
 		res = curl_easy_perform(curl);
-		if (res != CURLE_OK) {
-			return;
+
+		lock_guard<mutex> lock(switcher->m);
+		// this is disgusting but im just prototyping and i kinda dont really need to go
+		// through the hassle of working out json parsing libraries #SorryNotSorry
+		// ill fix this when i add the replay scene option
+		if (responseFromServer == "{\"activeScreens\":[\"ScreenLoading/ScreenLoading\"]}" || responseFromServer == "{\"activeScreens\":[]}")
+		{
+			switcher->apiInGame = true;
+		}
+		else {
+			switcher->apiInGame = false;
 		}
 	}
 	curl_easy_cleanup(curl);
-
-	std::string gameResponse;
-
-	curl = curl_easy_init();
-	if (curl) {
-		string reqURL = switcher->ipAddr;
-		if (reqURL == "") {
-			reqURL = "localhost";
-		}
-		reqURL = "http://" + reqURL + ":6119/game";
-
-		curl_easy_setopt(curl, CURLOPT_URL, reqURL.c_str());
-		curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 1L);
-		curl_easy_setopt(curl, CURLOPT_TIMEOUT, 1L);
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &gameResponse);
-		res = curl_easy_perform(curl);
-		if (res != CURLE_OK) {
-			return;
-		}
-	}
-	curl_easy_cleanup(curl);
-
-	lock_guard<mutex> lock(switcher->m);
-	// this is disgusting but im just prototyping and i kinda dont really need to go
-	// through the hassle of working out json parsing libraries #SorryNotSorry
-	// ill fix this when i add the replay scene option
-	if (UIResponse == "{\"activeScreens\":[]}" || UIResponse == "{\"activeScreens\":[\"ScreenLoading/ScreenLoading\"]}")
-	{
-		switcher->apiInGame = true;
-	}
-	else {
-		switcher->apiInGame = false;
-	}
-	if (strstr(gameResponse.c_str(), "\"isReplay\":true"))
-	{
-		switcher->apiInReplay = true;
-	}
-	else {
-		switcher->apiInReplay = false;
-	}
-
 }
 
 void SwitcherData::Thread() {
+	
 	chrono::duration<long long, milli> duration =
 		chrono::milliseconds(interval);
 
 	for (;;) {
-
+		
 		thread t(&SwitcherData::api_callback, this);
-
+		
 		unique_lock<mutex> lock(m);
 		cv.wait_for(lock, duration);
 
@@ -205,26 +164,15 @@ void SwitcherData::Thread() {
 			break;
 		}
 		duration = chrono::milliseconds(interval);
-		
-		OBSWeakSource scene;
 
-		if ((!switcher->apiInGame && switcher->inGame) || (switcher->apiInGame && !switcher->inGame)) {
-			switcher->inGame = !switcher->inGame;
-			if (switcher->inGame) {
+		if ((!apiInGame && inGame) || (apiInGame && !inGame)) {
+			inGame = !inGame;
+
+			OBSWeakSource scene = switcher->outGameScene;
+			if (inGame) {
 				scene = switcher->inGameScene;
 			}
-			else {
-				scene = switcher->outGameScene;
-				switcher->inReplay = false;
-			}
-		}
 
-		if (switcher->inGame && switcher->apiInReplay) {
-			switcher->inReplay = true;
-			scene = switcher->replayScene;
-		}
-
-		if (scene) {
 			obs_source_t *source = obs_weak_source_get_source(scene);
 			obs_source_t *currentSource = obs_frontend_get_current_scene();
 
@@ -235,6 +183,7 @@ void SwitcherData::Thread() {
 			obs_source_release(source);
 
 		}
+		
 	}
 }
 
@@ -265,20 +214,6 @@ void SceneSwitcher::on_outGameScene_currentTextChanged(const QString& text)
 		obs_weak_source_t* ws = obs_source_get_weak_source(scene);
 
 		switcher->outGameScene = ws;
-
-		obs_weak_source_release(ws);
-		obs_source_release(scene);
-	}
-}
-
-void SceneSwitcher::on_replayScene_currentTextChanged(const QString& text)
-{
-	if (!loading) {
-		lock_guard<mutex> lock(switcher->m);
-		obs_source_t* scene = obs_get_source_by_name(text.toUtf8().constData());
-		obs_weak_source_t* ws = obs_source_get_weak_source(scene);
-
-		switcher->replayScene = ws;
 
 		obs_weak_source_release(ws);
 		obs_source_release(scene);
@@ -317,9 +252,6 @@ static void SaveSceneSwitcher(obs_data_t *save_data, bool saving, void *)
 		string outGameSceneName = GetWeakSourceName(switcher->outGameScene);
 		obs_data_set_string(obj, "out_game_scene", outGameSceneName.c_str());
 
-		string replaySceneName = GetWeakSourceName(switcher->replayScene);
-		obs_data_set_string(obj, "replay_scene", replaySceneName.c_str());
-
 		obs_data_set_bool(obj, "is_running", switcher->th.joinable());
 		obs_data_set_string(obj, "ip_addr", switcher->ipAddr.c_str());
 
@@ -340,10 +272,6 @@ static void SaveSceneSwitcher(obs_data_t *save_data, bool saving, void *)
 		string outGameScene =
 			obs_data_get_string(obj, "out_game_scene");
 		switcher->outGameScene = GetWeakSourceByName(outGameScene.c_str());
-
-		string replayScene =
-			obs_data_get_string(obj, "replay_scene");
-		switcher->replayScene = GetWeakSourceByName(replayScene.c_str());
 
 		string ipAddr = obs_data_get_string(obj, "ip_addr");
 		switcher->ipAddr = ipAddr;
