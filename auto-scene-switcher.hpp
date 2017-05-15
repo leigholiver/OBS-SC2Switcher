@@ -28,4 +28,5 @@ public:
 	void on_replayScene_currentTextChanged(const QString& text);
 	void on_ipAddr_textChanged(const QString &name);
 	void on_toggleStartButton_clicked();
+	void on_exitButton_clicked();
 };

@@ -25,7 +25,6 @@ struct SwitcherData {
 	condition_variable cv;
 	mutex m;
 	bool stop = false;
-	thread t; // curl thread
 
 	void Thread();
 	void Start();
@@ -37,16 +36,9 @@ struct SwitcherData {
 	OBSWeakSource replayScene;
 	string ipAddr;
 
-	bool hasHitMenu = false;
-
-	bool inGame = false;
-	bool inReplay = false;
-	bool apiInGame = false;
-	bool apiInReplay = false;
-	bool apiIsLoading = false;
-
 	int state = 0;
 	int apiState = 0;
+	bool apiInReplay = false; 
 
 	int STATE_INGAME = 1;
 	int STATE_REPLAY = 2;
@@ -224,12 +216,13 @@ void SwitcherData::api_callback() {
 		return;
 	}
 	json_t* isReplay = json_object_get(root, "isReplay");
-	if (isReplay == json_true()) {
-		switcher->apiInReplay = true;
-	}
-	else {
-		switcher->apiInReplay = false;
-	}
+	switcher->apiInReplay = (isReplay == json_true());
+    //if (isReplay == json_true()) {
+	//	switcher->apiInReplay = true;
+	//}
+	//else {
+	//	switcher->apiInReplay = false;
+	//}
 }
 
 void SwitcherData::Thread() {
@@ -237,7 +230,6 @@ void SwitcherData::Thread() {
 		chrono::milliseconds(interval);
 
 	for (;;) {
-
 		thread t(&SwitcherData::api_callback, this);
 
 		unique_lock<mutex> lock(m);
@@ -356,6 +348,11 @@ void SceneSwitcher::on_toggleStartButton_clicked()
 		switcher->Start();
 		ui->toggleStartButton->setText(obs_module_text("Stop"));
 	}
+}
+
+void SceneSwitcher::on_exitButton_clicked()
+{
+	close();
 }
 
 static void SaveSceneSwitcher(obs_data_t *save_data, bool saving, void *)
