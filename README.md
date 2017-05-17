@@ -4,6 +4,7 @@
 
 ## Installation: 
 64bit: copy `sc2switcher.dll` from the `obs-plugins/64bit` folder in the zip file into `c:/program files (x86)/obs-studio/obs-plugins/64bit` directory
+
 32bit: copy `sc2switcher-32.dll` from the `obs-plugins/32bit` folder in the zip file into `c:/program files (x86)/obs-studio/obs-plugins/32bit` directory 
 
 ### Usage: 
