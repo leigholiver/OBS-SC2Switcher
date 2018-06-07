@@ -1,6 +1,6 @@
 ## OBS SC2 Scene Switcher
 
-## [Download](https://github.com/leigholiver/OBS-SC2Switcher/releases/download/0.6/sc2switcher.zip)
+## [Download](https://github.com/leigholiver/OBS-SC2Switcher/releases/download/0.7/sc2switcher.zip)
 
 ## Installation: 
 64bit: copy `sc2switcher.dll` from the `obs-plugins/64bit` folder in the zip file into `c:/program files (x86)/obs-studio/obs-plugins/64bit` directory
