@@ -2,7 +2,6 @@
 
 #include <obs.hpp>
 #include <string>
-#include <QString>
 
 static inline OBSWeakSource GetWeakSourceByName(const char *name)
 {
@@ -15,11 +14,6 @@ static inline OBSWeakSource GetWeakSourceByName(const char *name)
 	}
 
 	return weak;
-}
-
-static inline OBSWeakSource GetWeakSourceByQString(const QString &name)
-{
-	return GetWeakSourceByName(name.toUtf8().constData());
 }
 
 static inline std::string GetWeakSourceName(obs_weak_source_t *weak_source)

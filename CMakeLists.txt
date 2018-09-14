@@ -1,41 +1,53 @@
-project(sc2switcher)
-
+project(sc2switcher3)
 include_directories(${OBS_JANSSON_INCLUDE_DIRS})
 
-set(sc2switcher_HEADERS
-	${sc2switcher_HEADERS}
-	auto-scene-switcher.hpp
-	tool-helpers.hpp
+set(sc2switcher3_HEADERS
+	${sc2switcher3_HEADERS}
+	SC2Data.h
+	Observer.h
+	SC2State.h
+	Constants.h
+	SceneSwitcher.h
+	ScoreTracker.h
+	Webhook.h
+	Config.h
+	forms/SettingsDialog.h
 	)
-set(sc2switcher_SOURCES
-	${sc2switcher_SOURCES}
-	sc2switcher.c
-	auto-scene-switcher.cpp
+set(sc2switcher3_SOURCES
+	${sc2switcher3_SOURCES}
+	sc2switcher.cpp
+	SC2Data.cpp
+	SC2State.cpp
+	SceneSwitcher.cpp
+	ScoreTracker.cpp
+	Webhook.cpp
+	Config.cpp
+	forms/SettingsDialog.cpp
 	)
-set(sc2switcher_UI
-	${sc2switcher_UI}
-	forms/auto-scene-switcher.ui
+set(sc2switcher3_UI
+	${sc2switcher3_UI}
+	forms/SettingsDialog.ui
 	)
-set(sc2switcher_PLATFORM_LIBS
+set(sc2switcher3_PLATFORM_LIBS
 	${OBS_JANSSON_IMPORT}
 	)
 
-qt5_wrap_ui(sc2switcher_UI_HEADERS
-	${sc2switcher_UI}
-	${sc2switcher_PLATFORM_UI})
+qt5_wrap_ui(sc2switcher3_UI_HEADERS
+	${sc2switcher3_UI}
+	${sc2switcher3_PLATFORM_UI})
 
-add_library(sc2switcher MODULE
-	${sc2switcher_HEADERS}
-	${sc2switcher_SOURCES}
-	${sc2switcher_UI_HEADERS}
-	${sc2switcher_PLATFORM_SOURCES}
-	${sc2switcher_PLATFORM_HEADERS}
+add_library(sc2switcher3 MODULE
+	${sc2switcher3_HEADERS}
+	${sc2switcher3_SOURCES}
+	${sc2switcher3_UI_HEADERS}
+	${sc2switcher3_PLATFORM_SOURCES}
+	${sc2switcher3_PLATFORM_HEADERS}
 	)
-target_link_libraries(sc2switcher
-	${sc2switcher_PLATFORM_LIBS}
+target_link_libraries(sc2switcher3
+	${sc2switcher3_PLATFORM_LIBS}
 	obs-frontend-api
 	Qt5::Widgets
-	libobs
-    ${LIBCURL_LIBRARIES})
+	${LIBCURL_LIBRARIES}
+	libobs)
 
-install_obs_plugin(sc2switcher)
+install_obs_plugin(sc2switcher3)
