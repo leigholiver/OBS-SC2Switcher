@@ -16,9 +16,6 @@ class SC2Data : public QObject {
   	SC2State* state;
   	QTimer* timer;
 	vector<Observer*> watchers;
-  	//QNetworkAccessManager networkManager;
-	//QUrl uiUrl;
-	//QUrl gameUrl;
 
   public:
     explicit SC2Data(QObject* parent = Q_NULLPTR);

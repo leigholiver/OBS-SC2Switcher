@@ -37,15 +37,22 @@ void Webhook::notify(SC2State*& previous, SC2State*& current) {
 
  void Webhook::sendRequest(SC2State*& game, std::string event) {
  	if(!game->fullState.isReplay) {
-	 	CURL *curl;
-		CURLcode res;
-		
 		Config* cfg = Config::Current();
+
+		int still_running = 0;
+		int repeats = 0;
+		CURLM *multi_handle;
+		multi_handle = curl_multi_init();
  		
- 		// todo: make this a multi curl 
+		// vector of handles 
+		vector<CURL*> handles;
+
  		for (string &url : cfg->webhookURLList) {
-		 	curl = curl_easy_init();
-			if (curl) {
+			CURL *handle;
+			handle = curl_easy_init();
+			if (handle) {
+				curl_multi_add_handle(multi_handle, handle);
+				handles.push_back(handle);
 			 	std::string qdelim = "?";
 		 	  	std::size_t found = url.find(qdelim);
 				if (found!=std::string::npos) {
@@ -53,16 +60,41 @@ void Webhook::notify(SC2State*& previous, SC2State*& current) {
 				}
 
 				std::string resp = getJSONStringFromSC2State(game, event);
-			 	std::string c_url = url + qdelim + "json=" + curl_easy_escape(curl, resp.c_str(), 0);
-				curl_easy_setopt(curl, CURLOPT_URL, c_url.c_str());
-				curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 150);
-				res = curl_easy_perform(curl);
-				curl_easy_cleanup(curl);
-				if (res != CURLE_OK) {
-					// pass
-				}
+			 	std::string c_url = url + qdelim + "json=" + curl_easy_escape(handle, resp.c_str(), 0);
+				curl_easy_setopt(handle, CURLOPT_URL, c_url.c_str());
+				curl_easy_setopt(handle, CURLOPT_TIMEOUT_MS, 500);
 			}
 		}
+
+		curl_multi_perform(multi_handle, &still_running);
+		while(still_running) {
+			CURLMcode mc; /* curl_multi_wait() return code */ 
+			int numfds;
+			mc = curl_multi_wait(multi_handle, NULL, 0, 1000, &numfds);
+
+			if(mc != CURLM_OK) {
+				break;
+			}
+
+			if(!numfds) {
+				repeats++;
+				if(repeats > 1) {
+					break;
+				}
+			}
+			else {
+				repeats = 0;
+			}
+
+			curl_multi_perform(multi_handle, &still_running);
+		}
+
+		// clean up each handle
+		for (CURL* &handle : handles) {
+			curl_multi_remove_handle(multi_handle, handle);
+  			curl_easy_cleanup(handle);
+		}
+		curl_multi_cleanup(multi_handle);
 	}
  }
 
