@@ -29,18 +29,17 @@ void Webhook::notify(SC2State*& previous, SC2State*& current) {
 			event = "enter";
 		}
 
- 		if(event != "") {
- 			sendRequest(current, event);
+		if (event != "") {
+			sendRequest(current, event);
  		}
  	}
  }
 
- void Webhook::sendRequest(SC2State*& game, std::string event) {
+void Webhook::sendRequest(SC2State*& game, std::string event) {
  	if(!game->fullState.isReplay) {
 		Config* cfg = Config::Current();
 
 		int still_running = 0;
-		int repeats = 0;
 		CURLM *multi_handle;
 		multi_handle = curl_multi_init();
  		
@@ -75,20 +74,8 @@ void Webhook::notify(SC2State*& previous, SC2State*& current) {
 			if(mc != CURLM_OK) {
 				break;
 			}
-
-			if(!numfds) {
-				repeats++;
-				if(repeats > 1) {
-					break;
-				}
-			}
-			else {
-				repeats = 0;
-			}
-
 			curl_multi_perform(multi_handle, &still_running);
 		}
-
 		// clean up each handle
 		for (CURL* &handle : handles) {
 			curl_multi_remove_handle(multi_handle, handle);
