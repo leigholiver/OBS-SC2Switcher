@@ -16,16 +16,25 @@ void Webhook::notify(SC2State*& previous, SC2State*& current) {
  	Config* cfg = Config::Current();
  	if(cfg->webhookEnabled) {
  		std::string event = "";
+ 		// quit and rewind
+ 		if(previous->gameState == GAME_INGAME && 
+ 			previous->appState == APP_INGAME && 
+ 			current->gameState == GAME_REPLAY) {
+ 			if(current->fullState.players.size() == 2) {
+ 				event = "exit";
+ 			}
+ 		}
 
-		if(previous->appState != current->appState &&
-			current->appState != APP_INGAME && previous->appState == APP_INGAME) {	
+ 		// just quit 
+		if(current->appState != APP_INGAME && 
+			previous->appState == APP_INGAME) {
 			if(current->fullState.players.size() == 2 && !current->fullState.isReplay) {
 				event = "exit";
 			}
 		}
 
-		if(previous->appState != current->appState &&
-			current->appState == APP_INGAME && previous->appState != APP_INGAME) {
+		if(current->appState == APP_INGAME && 
+			previous->appState != APP_INGAME) {
 			event = "enter";
 		}
 
@@ -36,53 +45,51 @@ void Webhook::notify(SC2State*& previous, SC2State*& current) {
  }
 
 void Webhook::sendRequest(SC2State*& game, std::string event) {
- 	if(!game->fullState.isReplay) {
-		Config* cfg = Config::Current();
+	Config* cfg = Config::Current();
 
-		int still_running = 0;
-		CURLM *multi_handle;
-		multi_handle = curl_multi_init();
- 		
-		// vector of handles 
-		vector<CURL*> handles;
+	int still_running = 0;
+	CURLM *multi_handle;
+	multi_handle = curl_multi_init();
+		
+	// vector of handles 
+	vector<CURL*> handles;
 
- 		for (string &url : cfg->webhookURLList) {
-			CURL *handle;
-			handle = curl_easy_init();
-			if (handle) {
-				curl_multi_add_handle(multi_handle, handle);
-				handles.push_back(handle);
-			 	std::string qdelim = "?";
-		 	  	std::size_t found = url.find(qdelim);
-				if (found!=std::string::npos) {
-					qdelim = "&";
-				}
-
-				std::string resp = getJSONStringFromSC2State(game, event);
-			 	std::string c_url = url + qdelim + "json=" + curl_easy_escape(handle, resp.c_str(), 0);
-				curl_easy_setopt(handle, CURLOPT_URL, c_url.c_str());
-				curl_easy_setopt(handle, CURLOPT_TIMEOUT_MS, 500);
+		for (string &url : cfg->webhookURLList) {
+		CURL *handle;
+		handle = curl_easy_init();
+		if (handle) {
+			curl_multi_add_handle(multi_handle, handle);
+			handles.push_back(handle);
+		 	std::string qdelim = "?";
+	 	  	std::size_t found = url.find(qdelim);
+			if (found!=std::string::npos) {
+				qdelim = "&";
 			}
-		}
 
-		curl_multi_perform(multi_handle, &still_running);
-		while(still_running) {
-			CURLMcode mc; /* curl_multi_wait() return code */ 
-			int numfds;
-			mc = curl_multi_wait(multi_handle, NULL, 0, 1000, &numfds);
-
-			if(mc != CURLM_OK) {
-				break;
-			}
-			curl_multi_perform(multi_handle, &still_running);
+			std::string resp = getJSONStringFromSC2State(game, event);
+		 	std::string c_url = url + qdelim + "json=" + curl_easy_escape(handle, resp.c_str(), 0);
+			curl_easy_setopt(handle, CURLOPT_URL, c_url.c_str());
+			curl_easy_setopt(handle, CURLOPT_TIMEOUT_MS, 500);
 		}
-		// clean up each handle
-		for (CURL* &handle : handles) {
-			curl_multi_remove_handle(multi_handle, handle);
-  			curl_easy_cleanup(handle);
-		}
-		curl_multi_cleanup(multi_handle);
 	}
+
+	curl_multi_perform(multi_handle, &still_running);
+	while(still_running) {
+		CURLMcode mc; /* curl_multi_wait() return code */ 
+		int numfds;
+		mc = curl_multi_wait(multi_handle, NULL, 0, 1000, &numfds);
+
+		if(mc != CURLM_OK) {
+			break;
+		}
+		curl_multi_perform(multi_handle, &still_running);
+	}
+	// clean up each handle
+	for (CURL* &handle : handles) {
+		curl_multi_remove_handle(multi_handle, handle);
+			curl_easy_cleanup(handle);
+	}
+	curl_multi_cleanup(multi_handle);
  }
 
  std::string Webhook::getQueryStringFromSC2State(SC2State*& game, std::string event, CURL* curl) {

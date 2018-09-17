@@ -61,7 +61,7 @@ void Config::checkForUpdates() {
 	json_t* url = json_object_get(root, "tag_name");
 	const char *urlText = json_string_value(url);
 	float latestVer = stof(urlText);
-	float currentVer = 0.92;
+	float currentVer = 0.93;
 	if(latestVer > currentVer) {
 		json_t* url2 = json_object_get(root, "html_url");
 		const char *urlText2 = json_string_value(url2);
