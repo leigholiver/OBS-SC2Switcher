@@ -34,7 +34,8 @@ void Webhook::notify(SC2State*& previous, SC2State*& current) {
 		}
 
 		if(current->appState == APP_INGAME && 
-			previous->appState != APP_INGAME) {
+			previous->appState != APP_INGAME &&
+			current->gameState != GAME_REPLAY) {
 			event = "enter";
 		}
 

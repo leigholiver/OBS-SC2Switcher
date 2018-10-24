@@ -54,7 +54,7 @@ void SC2Data::update() {
 		if (curl) {
 			std::string url = reqURL + "ui";
 			curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-			curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 50);
+			curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 100);
 			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &UIResponse);
 			res = curl_easy_perform(curl);
@@ -69,7 +69,7 @@ void SC2Data::update() {
 		if (curl) {
 			std::string url = reqURL + "game";
 			curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-			curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 50);
+			curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 100);
 			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &gameResponse);
 			res = curl_easy_perform(curl);

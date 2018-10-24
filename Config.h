@@ -3,6 +3,7 @@
 #include <obs.hpp>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 #include "Constants.h"
 #include "obs-util.h"
@@ -117,9 +118,13 @@ static void LoadSaveHandler(obs_data_t *save_data, bool saving, void *) {
 			
 		obs_data_array_t *array = obs_data_get_array(obj, "usernames");
 		size_t count = obs_data_array_count(array);
+		vector<std::string> seen;
 		for (size_t i = 0; i < count; i++) {
 			obs_data_t *array_obj = obs_data_array_item(array, i);
-			cfg->usernames.push_back(obs_data_get_string(array_obj, "username"));
+			std::string un = obs_data_get_string(array_obj, "username");
+			if (std::find(seen.begin(), seen.end(), un) == seen.end() && un != "") {
+				cfg->usernames.push_back(un);
+			}
 			obs_data_release(array_obj);
 		}
 		obs_data_array_release(array);

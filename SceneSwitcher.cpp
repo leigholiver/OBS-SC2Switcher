@@ -54,10 +54,14 @@ void SceneSwitcher::notify(SC2State*& previous, SC2State*& current) {
 	 		if(current->appState == APP_MENU) {
 	 			OBSWeakSource tmpScene;
 				tmpScene = cfg->menuScenes[current->menuState];
-				if (!tmpScene || current->menuState == MENU_NONE) {
+				// if (!tmpScene || current->menuState == MENU_NONE) {
+				if (current->menuState == MENU_NONE) {
 					tmpScene = cfg->outGameScene;
 				}
-				scene = tmpScene;
+
+				if(tmpScene) {
+					scene = tmpScene;
+				}
 	 		}
 	 	}
 

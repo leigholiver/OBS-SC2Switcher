@@ -75,7 +75,9 @@ SettingsDialog::SettingsDialog(QWidget* parent) :
 	ui->versusScene->setCurrentText(GetWeakSourceName(config->menuScenes[MENU_VERSUS]).c_str());
 
 	for (size_t i = 0; i < config->usernames.size(); i++) {
-		ui->userNames->addItem(config->usernames[i].c_str());
+		if(config->usernames[i] != "") {
+			ui->userNames->addItem(config->usernames[i].c_str());
+		}
 	}
 
 	for (size_t i = 0; i < config->recentUsernames.size(); i++) {
@@ -329,10 +331,11 @@ void SettingsDialog::on_addUsernameButton_clicked() {
 	if(!isLoading) {
 		// add the username to our usernames
 		string username = ui->usernameLine->text().toUtf8().constData();
-		config->usernames.push_back(username);
-		
-		// add it to the ui list
-		ui->userNames->addItem(ui->usernameLine->text());
+
+		if (std::find(config->usernames.begin(), config->usernames.end(), username) == config->usernames.end() && username != "") {
+			config->usernames.push_back(username);		// add it to the ui list
+			ui->userNames->addItem(ui->usernameLine->text());
+		}
 
 		// clear the username input
 		ui->usernameLine->setText("");
