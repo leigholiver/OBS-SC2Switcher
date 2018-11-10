@@ -108,11 +108,26 @@ SettingsDialog::SettingsDialog(QWidget* parent) :
 	if(config->switcherEnabled) {
 		ui->switcherEnabled->setChecked(true);
 	}
+	else {
+		ui->switcherEnabled->setChecked(false);	
+	}
 	if(config->scoresEnabled) {
 		ui->scoresEnabled->setChecked(true);
 	}
+	else {
+		ui->scoresEnabled->setChecked(false);	
+	}
 	if(config->popupsEnabled) {
 		ui->popupsEnabled->setChecked(true);
+	}
+	else {
+		ui->popupsEnabled->setChecked(false);	
+	}
+	if(config->clearSettings) {
+		ui->clearSettings->setChecked(true);
+	}
+	else {
+		ui->clearSettings->setChecked(false);	
 	}
 
 	if(config->webhookEnabled) {
@@ -135,7 +150,7 @@ SettingsDialog::~SettingsDialog() {
 }
 
 void SettingsDialog::closeEvent(QCloseEvent*) {
-	obs_frontend_save();
+	//obs_frontend_save();
 }
 
 
@@ -143,7 +158,7 @@ void SettingsDialog::on_inGameScene_currentTextChanged(const QString& text) {
 	if(!isLoading) {
 		obs_source_t* scene = obs_get_source_by_name(text.toUtf8().constData());
 		obs_weak_source_t* ws = obs_source_get_weak_source(scene);
-
+		
 		config->inGameScene = ws;
 
 		obs_weak_source_release(ws);
@@ -415,6 +430,15 @@ void SettingsDialog::on_scoresEnabled_stateChanged(int state) {
 	}
 	else {
 		config->scoresEnabled = false;
+	}
+}
+
+void SettingsDialog::on_clearSettings_stateChanged(int state) {
+	if(state == Qt::Checked) {
+		config->clearSettings = true;
+	}
+	else {
+		config->clearSettings = false;
 	}
 }
 

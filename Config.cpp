@@ -16,14 +16,31 @@ Config::Config() :
 	isRunning(false),
 	switcherEnabled(false),
 	scoresEnabled(false),
-	popupsEnabled(true) {}
+	popupsEnabled(true),
+	webhookEnabled(false),
+	clearSettings(false) {}
 
 Config* Config::Current() {
-    return _instance;
+   	return _instance;
 }
 
 Config::~Config() {
-    delete _instance;
+    //delete _instance;
+	obs_weak_source_release(inGameScene);
+	obs_weak_source_release(outGameScene);
+	obs_weak_source_release(replayScene);
+	obs_weak_source_release(obsScene);
+	obs_weak_source_release(menuScenes[MENU_SCORESCREEN]);
+	obs_weak_source_release(menuScenes[MENU_PROFILE]);
+	obs_weak_source_release(menuScenes[MENU_LOBBY]);
+	obs_weak_source_release(menuScenes[MENU_HOME]);
+	obs_weak_source_release(menuScenes[MENU_CAMPAIGN]);
+	obs_weak_source_release(menuScenes[MENU_COLLECTION]);
+	obs_weak_source_release(menuScenes[MENU_COOP]);
+	obs_weak_source_release(menuScenes[MENU_CUSTOM]);
+	obs_weak_source_release(menuScenes[MENU_REPLAYS]);
+	obs_weak_source_release(menuScenes[MENU_VERSUS]);
+
 }
 
 void Config::checkForUpdates() {
@@ -61,7 +78,7 @@ void Config::checkForUpdates() {
 	json_t* url = json_object_get(root, "tag_name");
 	const char *urlText = json_string_value(url);
 	float latestVer = stof(urlText);
-	float currentVer = 0.94;
+	float currentVer = 0.95;
 	if(latestVer > currentVer) {
 		json_t* url2 = json_object_get(root, "html_url");
 		const char *urlText2 = json_string_value(url2);

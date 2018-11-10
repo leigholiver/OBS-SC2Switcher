@@ -45,4 +45,6 @@ bool obs_module_load(void) {
 void obs_module_unload(void) {
 	delete sw;
 	delete wh;
+	Config* cfg = Config::Current();
+	cfg->~Config();
 }

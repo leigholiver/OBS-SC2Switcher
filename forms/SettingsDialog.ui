@@ -40,11 +40,22 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_14">
       <item>
-       <widget class="QPushButton" name="toggleStartButton">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
+        <item>
+         <widget class="QPushButton" name="toggleStartButton">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="clearSettings">
+          <property name="text">
+           <string>Clear Settings On Next Restart</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_8">
