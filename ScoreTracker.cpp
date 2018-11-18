@@ -32,6 +32,8 @@ ScoreTracker::ScoreTracker(SC2Data *sc2): Observer(sc2){
     _instance = this;
 }
 
+std::string ScoreTracker::getName() { return "Score Tracker"; }
+
 void ScoreTracker::notify(SC2State*& previous, SC2State*& current) {
  	Config* cfg = Config::Current();
  	if(cfg->scoresEnabled) {

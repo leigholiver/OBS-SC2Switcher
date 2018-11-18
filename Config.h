@@ -16,6 +16,7 @@ class Config {
 		Config();
 		~Config();
 		static Config* Current();
+		static void free();
 
 		// sc2data
 		std::string ipAddr;
@@ -38,15 +39,17 @@ class Config {
 		std::string updateURL;
 		std::string updateDescription;
 		void checkForUpdates();
+		bool logging = false;
+		bool switchOnLoad = true;
+		bool webhookEnabled = false;
+		bool clearSettings = false;
 
 		bool switcherEnabled;
 		bool scoresEnabled;
 		bool popupsEnabled;
-		bool webhookEnabled;
 
 		vector<std::string> webhookURLList;
 
-		bool clearSettings;
 
 	private:
 		static Config* _instance;
@@ -66,6 +69,8 @@ static void LoadSaveHandler(obs_data_t *save_data, bool saving, void *) {
 			obs_data_set_bool(obj, "popups_enabled", cfg->popupsEnabled);
 			obs_data_set_string(obj, "ip_addr", cfg->ipAddr.c_str());
 			obs_data_set_bool(obj, "webhook_enabled", cfg->webhookEnabled);
+			obs_data_set_bool(obj, "logging", cfg->logging);
+			obs_data_set_bool(obj, "switch_on_load", cfg->switchOnLoad);
 
 			obs_data_array_t *array = obs_data_array_create();
 			for (string &s : cfg->webhookURLList) {
@@ -163,6 +168,8 @@ static void LoadSaveHandler(obs_data_t *save_data, bool saving, void *) {
 		cfg->scoresEnabled = obs_data_get_bool(obj, "scores_enabled");
 		cfg->popupsEnabled = obs_data_get_bool(obj, "popups_enabled");
 		cfg->webhookEnabled = obs_data_get_bool(obj, "webhook_enabled");
+		cfg->logging = obs_data_get_bool(obj, "logging");
+		cfg->switchOnLoad = obs_data_get_bool(obj, "switch_on_load");
 
 
 		obs_weak_source_release(cfg->inGameScene);

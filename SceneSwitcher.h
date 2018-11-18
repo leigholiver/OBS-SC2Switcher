@@ -9,4 +9,5 @@ class SceneSwitcher : public Observer {
 
   	public slots:
   		void notify(SC2State*& previous, SC2State*& current);
+  		std::string getName();
 };

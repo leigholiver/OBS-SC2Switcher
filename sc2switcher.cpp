@@ -3,6 +3,7 @@
 #include <QMainWindow>
 
 #include "Config.h"
+#include "log.h"
 #include "SC2Data.h"
 #include "SceneSwitcher.h"
 #include "ScoreTracker.h"
@@ -16,7 +17,6 @@ ScoreTracker* st = nullptr;
 Webhook* wh = nullptr;
 
 bool obs_module_load(void) {
-	// set up load/save
 	obs_frontend_add_save_callback(LoadSaveHandler, nullptr);
 
 	//set up the settings dialog
@@ -43,8 +43,7 @@ bool obs_module_load(void) {
 }
 
 void obs_module_unload(void) {
+	Config::free();
 	delete sw;
 	delete wh;
-	Config* cfg = Config::Current();
-	cfg->~Config();
 }

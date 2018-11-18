@@ -19,4 +19,5 @@ class Observer : public QObject {
 			sc2->attach(this);
 		}
 		virtual void notify(SC2State*& previous, SC2State*& current) = 0;
+		virtual std::string getName() { return ""; };
 };

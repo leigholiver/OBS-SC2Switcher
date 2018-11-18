@@ -129,6 +129,20 @@ SettingsDialog::SettingsDialog(QWidget* parent) :
 	else {
 		ui->clearSettings->setChecked(false);	
 	}
+	
+	if(config->logging) {
+		ui->logging->setChecked(true);
+	}
+	else {
+		ui->logging->setChecked(false);	
+	}
+
+	if(config->switchOnLoad) {
+		ui->switchOnLoad->setChecked(true);
+	}
+	else {
+		ui->switchOnLoad->setChecked(false);	
+	}
 
 	if(config->webhookEnabled) {
 		ui->webhookEnabled->setChecked(true);
@@ -415,49 +429,81 @@ void SettingsDialog::on_textTemplate_textChanged() {
 }
 
 void SettingsDialog::on_switcherEnabled_stateChanged(int state) {
-	if(state == Qt::Checked) {
-		config->switcherEnabled = true;
+	if(!isLoading) {
+		if(state == Qt::Checked) {
+			config->switcherEnabled = true;
+		}
+		else {
+			config->switcherEnabled = false;
+		}
 	}
-	else {
-		config->switcherEnabled = false;
+}
+
+void SettingsDialog::on_logging_stateChanged(int state) {
+	if(!isLoading) {
+		if(state == Qt::Checked) {
+			config->logging = true;
+		}
+		else {
+			config->logging = false;
+		}
+	}
+}
+
+void SettingsDialog::on_switchOnLoad_stateChanged(int state) {
+	if(!isLoading) {
+		if(state == Qt::Checked) {
+			config->switchOnLoad = true;
+		}
+		else {
+			config->switchOnLoad = false;
+		}
 	}
 }
 
 
 void SettingsDialog::on_scoresEnabled_stateChanged(int state) {
-	if(state == Qt::Checked) {
-		config->scoresEnabled = true;
-	}
-	else {
-		config->scoresEnabled = false;
+	if(!isLoading) {
+		if(state == Qt::Checked) {
+			config->scoresEnabled = true;
+		}
+		else {
+			config->scoresEnabled = false;
+		}
 	}
 }
 
 void SettingsDialog::on_clearSettings_stateChanged(int state) {
-	if(state == Qt::Checked) {
-		config->clearSettings = true;
-	}
-	else {
-		config->clearSettings = false;
+	if(!isLoading) {
+		if(state == Qt::Checked) {
+			config->clearSettings = true;
+		}
+		else {
+			config->clearSettings = false;
+		}
 	}
 }
 
 void SettingsDialog::on_popupsEnabled_stateChanged(int state) {
-	if(state == Qt::Checked) {
-		config->popupsEnabled = true;
-	}
-	else {
-		config->popupsEnabled = false;
+	if(!isLoading) {
+		if(state == Qt::Checked) {
+			config->popupsEnabled = true;
+		}
+		else {
+			config->popupsEnabled = false;
+		}
 	}
 }
 
 
 void SettingsDialog::on_webhookEnabled_stateChanged(int state){
-	if(state == Qt::Checked) {
-		config->webhookEnabled = true;
-	}
-	else {
-		config->webhookEnabled = false;
+	if(!isLoading) {
+		if(state == Qt::Checked) {
+			config->webhookEnabled = true;
+		}
+		else {
+			config->webhookEnabled = false;
+		}
 	}
 }
 

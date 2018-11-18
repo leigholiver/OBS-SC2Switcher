@@ -16,12 +16,14 @@ class SC2Data : public QObject {
   	SC2State* state;
   	QTimer* timer;
 	vector<Observer*> watchers;
+	bool stopping;
 
   public:
     explicit SC2Data(QObject* parent = Q_NULLPTR);
     virtual ~SC2Data();
     static SC2Data* Instance;
     void attach(Observer* obs);
+	void stop();
 
   	public slots:
   		void update();

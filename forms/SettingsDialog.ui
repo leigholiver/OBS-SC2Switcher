@@ -49,11 +49,26 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="clearSettings">
-          <property name="text">
-           <string>Clear Settings On Next Restart</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_12">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_19">
+            <item>
+             <widget class="QCheckBox" name="clearSettings">
+              <property name="text">
+               <string>Clear Settings On Next Restart</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="logging">
+              <property name="text">
+               <string>Enable Debug Log</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
@@ -237,19 +252,30 @@
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
-       <x>50</x>
-       <y>20</y>
-       <width>471</width>
+       <x>30</x>
+       <y>30</y>
+       <width>521</width>
        <height>301</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_7">
       <item>
-       <widget class="QCheckBox" name="switcherEnabled">
-        <property name="text">
-         <string>Scene Switcher Enabled</string>
-        </property>
-       </widget>
+       <layout class="QVBoxLayout" name="verticalLayout_21">
+        <item>
+         <widget class="QCheckBox" name="switcherEnabled">
+          <property name="text">
+           <string>Scene Switcher Enabled</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="switchOnLoad">
+          <property name="text">
+           <string>Switch to In Game Scene when loading into game</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_6">

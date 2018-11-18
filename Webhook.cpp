@@ -9,8 +9,10 @@
 #include "obs-util.h"
 #include "APIState.h"
 #include "ScoreTracker.h"
+#include "log.h"
 
 Webhook::Webhook(SC2Data *sc2): Observer(sc2){ }
+std::string Webhook::getName() { return "Webhook"; }
 
 void Webhook::notify(SC2State*& previous, SC2State*& current) {
  	Config* cfg = Config::Current();
@@ -21,6 +23,7 @@ void Webhook::notify(SC2State*& previous, SC2State*& current) {
  			previous->appState == APP_INGAME && 
  			current->gameState == GAME_REPLAY) {
  			if(current->fullState.players.size() == 2) {
+				s2log("Quit/Rewind detected");
  				event = "exit";
  			}
  		}
@@ -29,6 +32,7 @@ void Webhook::notify(SC2State*& previous, SC2State*& current) {
 		if(current->appState != APP_INGAME && 
 			previous->appState == APP_INGAME) {
 			if(current->fullState.players.size() == 2 && !current->fullState.isReplay) {
+				s2log("Quit Event detected");
 				event = "exit";
 			}
 		}
@@ -36,6 +40,7 @@ void Webhook::notify(SC2State*& previous, SC2State*& current) {
 		if(current->appState == APP_INGAME && 
 			previous->appState != APP_INGAME &&
 			current->gameState != GAME_REPLAY) {
+				s2log("Enter Game Event detected");
 			event = "enter";
 		}
 
@@ -55,7 +60,8 @@ void Webhook::sendRequest(SC2State*& game, std::string event) {
 	// vector of handles 
 	vector<CURL*> handles;
 
-		for (string &url : cfg->webhookURLList) {
+	for (string &url : cfg->webhookURLList) {
+		s2log("Adding url: " + url);
 		CURL *handle;
 		handle = curl_easy_init();
 		if (handle) {
@@ -63,7 +69,7 @@ void Webhook::sendRequest(SC2State*& game, std::string event) {
 			handles.push_back(handle);
 		 	std::string qdelim = "?";
 	 	  	std::size_t found = url.find(qdelim);
-			if (found!=std::string::npos) {
+			if (found != std::string::npos) {
 				qdelim = "&";
 			}
 
@@ -85,10 +91,12 @@ void Webhook::sendRequest(SC2State*& game, std::string event) {
 		}
 		curl_multi_perform(multi_handle, &still_running);
 	}
+	s2log("requests finished");
+	
 	// clean up each handle
 	for (CURL* &handle : handles) {
 		curl_multi_remove_handle(multi_handle, handle);
-			curl_easy_cleanup(handle);
+		curl_easy_cleanup(handle);
 	}
 	curl_multi_cleanup(multi_handle);
  }

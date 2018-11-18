@@ -41,6 +41,8 @@ public:
 		void on_popupsEnabled_stateChanged(int state);
 		void on_webhookEnabled_stateChanged(int state);
 		void on_clearSettings_stateChanged(int state);
+		void on_logging_stateChanged(int state);
+		void on_switchOnLoad_stateChanged(int state);
 
 		void on_tWinPlus_clicked();
 		void on_tWinMinus_clicked();

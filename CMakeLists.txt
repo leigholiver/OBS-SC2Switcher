@@ -12,6 +12,7 @@ set(sc2switcher3_HEADERS
 	Webhook.h
 	Config.h
 	forms/SettingsDialog.h
+	log.h
 	)
 set(sc2switcher3_SOURCES
 	${sc2switcher3_SOURCES}
