@@ -4,7 +4,7 @@
 
 ## Installation: 
 ### Windows
-[Install the dependencies](https://www.microsoft.com/en-us/download/details.aspx?id=40784)
+(0.96 and below): [Install the dependencies](https://www.microsoft.com/en-us/download/details.aspx?id=40784)
 
 64bit: copy `sc2switcher.dll` from the zip file into `c:/program files (x86)/obs-studio/obs-plugins/64bit` directory
 
