@@ -54,7 +54,7 @@ void SceneSwitcher::notify(SC2State*& previous, SC2State*& current) {
 				s2log("Entered Menus. Finding Menu Scene");
 	 			OBSWeakSource tmpScene;
 
-	 			s2log("current->menustate is set: " + to_string(current->menuState));
+	 			s2log("current->menustate is set: " + std::to_string(current->menuState));
 				if (current->menuState == MENU_NONE) {
 					s2log("Menu state is MENU_NONE. Switching to Out of Game Scene");
 					tmpScene = cfg->outGameScene;

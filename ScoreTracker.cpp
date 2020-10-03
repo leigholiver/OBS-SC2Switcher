@@ -83,19 +83,19 @@ std::string ScoreTracker::getScoreString() {
 	std::map <size_t, std::map <std::string, std::string>> scoreMap;
 
 	scoreMap[0]["search"] = "${tw}";
-	scoreMap[0]["replace"] = to_string(scores["Terr"]["Victory"]);
+	scoreMap[0]["replace"] = std::to_string(scores["Terr"]["Victory"]);
 	scoreMap[1]["search"] = "${tl}";
-	scoreMap[1]["replace"] = to_string(scores["Terr"]["Defeat"]);
+	scoreMap[1]["replace"] = std::to_string(scores["Terr"]["Defeat"]);
 
 	scoreMap[2]["search"] = "${zw}";
-	scoreMap[2]["replace"] = to_string(scores["Zerg"]["Victory"]);
+	scoreMap[2]["replace"] = std::to_string(scores["Zerg"]["Victory"]);
 	scoreMap[3]["search"] = "${zl}";
-	scoreMap[3]["replace"] = to_string(scores["Zerg"]["Defeat"]);
+	scoreMap[3]["replace"] = std::to_string(scores["Zerg"]["Defeat"]);
 
 	scoreMap[4]["search"] = "${pw}";
-	scoreMap[4]["replace"] = to_string(scores["Prot"]["Victory"]);
+	scoreMap[4]["replace"] = std::to_string(scores["Prot"]["Victory"]);
 	scoreMap[5]["search"] = "${pl}";
-	scoreMap[5]["replace"] = to_string(scores["Prot"]["Defeat"]);
+	scoreMap[5]["replace"] = std::to_string(scores["Prot"]["Defeat"]);
 
 	for (size_t i = 0; i < scoreMap.size(); i++) {
 		std::string search = scoreMap[i]["search"];

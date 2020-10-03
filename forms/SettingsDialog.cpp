@@ -7,8 +7,6 @@
 #include "Constants.h"
 #include "obs-util.h"
 
-using namespace std;
-
 Config* config = Config::Current();
 
 SettingsDialog::SettingsDialog(QWidget* parent) :
@@ -206,7 +204,7 @@ void SettingsDialog::on_replayScene_currentTextChanged(const QString& text) {
 
 void SettingsDialog::on_ipAddr_textChanged(const QString& text) {
 	if(!isLoading) {
-		config->ipAddr = (string)text.toUtf8().constData();
+		config->ipAddr = (std::string) text.toUtf8().constData();
 	}
 }
 
@@ -359,7 +357,7 @@ void SettingsDialog::on_versusScene_currentTextChanged(const QString &text) {
 void SettingsDialog::on_addUsernameButton_clicked() {
 	if(!isLoading) {
 		// add the username to our usernames
-		string username = ui->usernameLine->text().toUtf8().constData();
+		std::string username = ui->usernameLine->text().toUtf8().constData();
 
 		if (std::find(config->usernames.begin(), config->usernames.end(), username) == config->usernames.end() && username != "") {
 			config->usernames.push_back(username);		// add it to the ui list
@@ -379,7 +377,7 @@ void SettingsDialog::on_removeUsernameButton_clicked() {
 		// remove the list item from the ui list
 		// have to iterate backwards because the size of the list changes as items are removed
 		// also store the name first as the value of usernameLine changes as items are removed and new items selected
-		string searchName = ui->usernameLine->text().toUtf8().constData();
+		std::string searchName = ui->usernameLine->text().toUtf8().constData();
 		for (int i = ui->userNames->count()-1; i >= 0; i--) {
 			QListWidgetItem *item = ui->userNames->item(i);
 			if (item->text() == QString::fromStdString(searchName)) {
@@ -414,16 +412,16 @@ void SettingsDialog::on_recentUsernames_itemSelectionChanged() {
 
 void SettingsDialog::on_textSourceName_textChanged(const QString& text) {
 	if(!isLoading) {
-		if (config->textSourceName != (string)text.toUtf8().constData()) {
-			config->textSourceName = (string)text.toUtf8().constData();
+		if (config->textSourceName != (std::string)text.toUtf8().constData()) {
+			config->textSourceName = (std::string)text.toUtf8().constData();
 		}
 	}
 }
 
 void SettingsDialog::on_textTemplate_textChanged() {
 	if(!isLoading) {
-		if (config->scoreString != (string)ui->textTemplate->toPlainText().toUtf8().constData()) {
-			config->scoreString = (string)ui->textTemplate->toPlainText().toUtf8().constData();
+		if (config->scoreString != (std::string)ui->textTemplate->toPlainText().toUtf8().constData()) {
+			config->scoreString = (std::string)ui->textTemplate->toPlainText().toUtf8().constData();
 		}
 	}
 }
@@ -630,7 +628,7 @@ void SettingsDialog::on_pLossMinus_clicked() {
 
 void SettingsDialog::on_addURLButton_clicked() {
 	if(!isLoading) {
-		string username = ui->webhookEnterGame->text().toUtf8().constData();
+		std::string username = ui->webhookEnterGame->text().toUtf8().constData();
 		config->webhookURLList.push_back(username);
 		ui->webhookURLList->addItem(ui->webhookEnterGame->text());
 		ui->webhookEnterGame->setText("");
@@ -641,7 +639,7 @@ void SettingsDialog::on_removeURLButton_clicked() {
 	if(!isLoading) {
 		config->webhookURLList.erase(std::remove(config->webhookURLList.begin(), config->webhookURLList.end(), ui->webhookEnterGame->text().toUtf8().constData()), config->webhookURLList.end());
 
-		string searchName = ui->webhookEnterGame->text().toUtf8().constData();
+		std::string searchName = ui->webhookEnterGame->text().toUtf8().constData();
 		for (int i = ui->webhookURLList->count()-1; i >= 0; i--) {
 			QListWidgetItem *item = ui->webhookURLList->item(i);
 			if (item->text() == QString::fromStdString(searchName)) {
