@@ -139,13 +139,21 @@ void SC2Data::update() {
 			state = newState;
 		}
 
-		if(state->appState != newState->appState || 
-			state->gameState != newState->gameState || 
-			state->menuState != newState->menuState ) {
+		// figure out if we're rewinding
+		bool stillInGame = state->appState == APP_INGAME && newState->appState == APP_INGAME;
+		bool nowAReplay = !state->fullState.isReplay && newState->fullState.isReplay;
+		bool rewinding = stillInGame && nowAReplay;
+		newState->fullState.isRewind = rewinding;
+
+		bool menuChanged = state->menuState != newState->menuState;
+		bool gameChanged = state->gameState != newState->gameState;
+		bool appChanged  = state->appState  != newState->appState;
+		
+		if (menuChanged || gameChanged || appChanged || rewinding) {
 			s2log("state has changed, notifying");
 			for (size_t i = 0; i < watchers.size(); i++) {
 				s2log("notifying " + watchers[i]->getName());
-	    		watchers[i]->notify(state, newState);
+	    			watchers[i]->notify(state, newState);
 			}
 			state = newState;
 		}
