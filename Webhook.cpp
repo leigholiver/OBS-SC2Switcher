@@ -60,7 +60,7 @@ void Webhook::sendRequest(SC2State*& game, std::string event) {
 	// vector of handles 
 	vector<CURL*> handles;
 
-	for (string &url : cfg->webhookURLList) {
+	for (std::string &url : cfg->webhookURLList) {
 		s2log("Adding url: " + url);
 		CURL *handle;
 		handle = curl_easy_init();
@@ -155,9 +155,9 @@ std::string Webhook::getJSONStringFromSC2State(SC2State*& game, std::string even
 
 	ScoreTracker* st = ScoreTracker::Current();
 	resp = resp + "\"scores\": { ";
-	resp = resp + "\"Terr\": {\"Victory\": " + to_string(st->scores["Terr"]["Victory"]) + ", \"Defeat\": " + to_string(st->scores["Terr"]["Defeat"]) + " },";
-	resp = resp + "\"Prot\": {\"Victory\": " + to_string(st->scores["Prot"]["Victory"]) + ", \"Defeat\": " + to_string(st->scores["Prot"]["Defeat"]) + " },";
-	resp = resp + "\"Zerg\": {\"Victory\": " + to_string(st->scores["Zerg"]["Victory"]) + ", \"Defeat\": " + to_string(st->scores["Zerg"]["Defeat"]) + " }";
+	resp = resp + "\"Terr\": {\"Victory\": " + std::to_string(st->scores["Terr"]["Victory"]) + ", \"Defeat\": " + std::to_string(st->scores["Terr"]["Defeat"]) + " },";
+	resp = resp + "\"Prot\": {\"Victory\": " + std::to_string(st->scores["Prot"]["Victory"]) + ", \"Defeat\": " + std::to_string(st->scores["Prot"]["Defeat"]) + " },";
+	resp = resp + "\"Zerg\": {\"Victory\": " + std::to_string(st->scores["Zerg"]["Victory"]) + ", \"Defeat\": " + std::to_string(st->scores["Zerg"]["Defeat"]) + " }";
 	resp = resp + "}";
 
 	resp = resp + "}";

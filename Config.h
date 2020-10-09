@@ -9,8 +9,6 @@
 #include "obs-util.h"
 #include <obs-frontend-api.h>
 
-using namespace std;
-
 class Config {
 	public:
 		Config();
@@ -20,8 +18,8 @@ class Config {
 
 		// sc2data
 		std::string ipAddr;
-		vector<std::string> usernames;
-		vector<std::string> recentUsernames;
+		std::vector<std::string> usernames;
+		std::vector<std::string> recentUsernames;
 
 		// scene switcher
 		OBSWeakSource inGameScene;
@@ -48,7 +46,7 @@ class Config {
 		bool scoresEnabled;
 		bool popupsEnabled;
 
-		vector<std::string> webhookURLList;
+		std::vector<std::string> webhookURLList;
 
 
 	private:
@@ -73,7 +71,7 @@ static void LoadSaveHandler(obs_data_t *save_data, bool saving, void *) {
 			obs_data_set_bool(obj, "switch_on_load", cfg->switchOnLoad);
 
 			obs_data_array_t *array = obs_data_array_create();
-			for (string &s : cfg->webhookURLList) {
+			for (std::string &s : cfg->webhookURLList) {
 				obs_data_t *array_obj = obs_data_create();
 				obs_data_set_string(array_obj, "URL", s.c_str());
 				obs_data_array_push_back(array, array_obj);
@@ -83,7 +81,7 @@ static void LoadSaveHandler(obs_data_t *save_data, bool saving, void *) {
 			obs_data_array_release(array);
 
 			obs_data_array_t *array2 = obs_data_array_create();
-			for (string &s : cfg->usernames) {
+			for (std::string &s : cfg->usernames) {
 				obs_data_t *array_obj = obs_data_create();
 				obs_data_set_string(array_obj, "username", s.c_str());
 				obs_data_array_push_back(array2, array_obj);
@@ -125,11 +123,11 @@ static void LoadSaveHandler(obs_data_t *save_data, bool saving, void *) {
 
 		cfg->ipAddr = obs_data_get_string(obj, "ip_addr");
 		
-		vector<std::string> emptyusernames;
+		std::vector<std::string> emptyusernames;
 		cfg->usernames = emptyusernames;
 		obs_data_array_t *array = obs_data_get_array(obj, "usernames");
 		size_t count = obs_data_array_count(array);
-		vector<std::string> seen;
+		std::vector<std::string> seen;
 		for (size_t i = 0; i < count; i++) {
 			obs_data_t *array_obj = obs_data_array_item(array, i);
 			std::string un = obs_data_get_string(array_obj, "username");
@@ -140,11 +138,11 @@ static void LoadSaveHandler(obs_data_t *save_data, bool saving, void *) {
 		}
 		obs_data_array_release(array);
 
-		vector<std::string> emptywebhookURLList;
+		std::vector<std::string> emptywebhookURLList;
 		cfg->webhookURLList = emptywebhookURLList;
 		obs_data_array_t *array2 = obs_data_get_array(obj, "webhookURLs");
 		size_t count2 = obs_data_array_count(array2);
-		vector<std::string> seen2;
+		std::vector<std::string> seen2;
 		for (size_t i = 0; i < count2; i++) {
 			obs_data_t *array_obj = obs_data_array_item(array2, i);
 			std::string url = obs_data_get_string(array_obj, "URL");
@@ -158,7 +156,7 @@ static void LoadSaveHandler(obs_data_t *save_data, bool saving, void *) {
 		cfg->textSourceName = obs_data_get_string(obj, "textSourceName");
 
 		
-		string scoreString = obs_data_get_string(obj, "scoreString");
+		std::string scoreString = obs_data_get_string(obj, "scoreString");
 		if (scoreString != "") {
 			cfg->scoreString = scoreString;
 		}

@@ -36,40 +36,41 @@ std::string ScoreTracker::getName() { return "Score Tracker"; }
 
 void ScoreTracker::notify(SC2State*& previous, SC2State*& current) {
  	Config* cfg = Config::Current();
- 	if(cfg->scoresEnabled) {
-	 	if(previous->appState != current->appState &&
-	 			current->appState == APP_MENU && previous->appState != APP_MENU) {			
-			if(current->fullState.players.size() == 2 && !current->fullState.isReplay) {
-				bool iAmPlayerA = false;
-				bool iAmPlayerB = false;
-				for (size_t i = 0; i < current->fullState.players.size(); i++) {
-					for (size_t j= 0; j < cfg->usernames.size(); j++) {
-						bool found = current->fullState.players[i]->name == cfg->usernames[j];
-						if(found && i==0) {
-							iAmPlayerA = true;
-						}
-						if(found && i==1) {
-							iAmPlayerB = true;
-						}
+	if(cfg->scoresEnabled && current->fullState.players.size() == 2) {
+		bool leftGame = previous->appState != APP_MENU &&
+				current->appState == APP_MENU &&
+				!current->fullState.isReplay;
+
+		if (leftGame || current->fullState.isRewind) {
+			bool iAmPlayerA = false;
+			bool iAmPlayerB = false;
+			for (size_t i = 0; i < current->fullState.players.size(); i++) {
+				for (size_t j= 0; j < cfg->usernames.size(); j++) {
+					bool found = current->fullState.players[i]->name == cfg->usernames[j];
+					if(found && i==0) {
+						iAmPlayerA = true;
+					}
+					if(found && i==1) {
+						iAmPlayerB = true;
 					}
 				}
-				if (iAmPlayerA && iAmPlayerB) {
-					// sc2 only tells us the name and barcodes are a thing.common names could also cause stats to
-					// be recorded incorrectly.only way to get accurate info is asking the user to confirm
-					addConfirmMessage(current->fullState.players[0], current->fullState.players[1]);
-				}
-				else if (!iAmPlayerA && !iAmPlayerB) {
-					// we didnt know which player the user was so we have to ask
-					addConfirmMessage(current->fullState.players[0], current->fullState.players[1]);
+			}
+			if (iAmPlayerA && iAmPlayerB) {
+				// sc2 only tells us the name and barcodes are a thing.common names could also cause stats to
+				// be recorded incorrectly.only way to get accurate info is asking the user to confirm
+				addConfirmMessage(current->fullState.players[0], current->fullState.players[1]);
+			}
+			else if (!iAmPlayerA && !iAmPlayerB) {
+				// we didnt know which player the user was so we have to ask
+				addConfirmMessage(current->fullState.players[0], current->fullState.players[1]);
+			}
+			else {
+				// normal result
+				if (iAmPlayerB) {
+					recordScore(current->fullState.players[0]->race, current->fullState.players[1]->result);
 				}
 				else {
-					// normal result
-					if (iAmPlayerB) {
-						recordScore(current->fullState.players[0]->race, current->fullState.players[1]->result);
-					}
-					else {
-						recordScore(current->fullState.players[1]->race, current->fullState.players[0]->result);
-					}
+					recordScore(current->fullState.players[1]->race, current->fullState.players[0]->result);
 				}
 			}
 		}
@@ -83,19 +84,19 @@ std::string ScoreTracker::getScoreString() {
 	std::map <size_t, std::map <std::string, std::string>> scoreMap;
 
 	scoreMap[0]["search"] = "${tw}";
-	scoreMap[0]["replace"] = to_string(scores["Terr"]["Victory"]);
+	scoreMap[0]["replace"] = std::to_string(scores["Terr"]["Victory"]);
 	scoreMap[1]["search"] = "${tl}";
-	scoreMap[1]["replace"] = to_string(scores["Terr"]["Defeat"]);
+	scoreMap[1]["replace"] = std::to_string(scores["Terr"]["Defeat"]);
 
 	scoreMap[2]["search"] = "${zw}";
-	scoreMap[2]["replace"] = to_string(scores["Zerg"]["Victory"]);
+	scoreMap[2]["replace"] = std::to_string(scores["Zerg"]["Victory"]);
 	scoreMap[3]["search"] = "${zl}";
-	scoreMap[3]["replace"] = to_string(scores["Zerg"]["Defeat"]);
+	scoreMap[3]["replace"] = std::to_string(scores["Zerg"]["Defeat"]);
 
 	scoreMap[4]["search"] = "${pw}";
-	scoreMap[4]["replace"] = to_string(scores["Prot"]["Victory"]);
+	scoreMap[4]["replace"] = std::to_string(scores["Prot"]["Victory"]);
 	scoreMap[5]["search"] = "${pl}";
-	scoreMap[5]["replace"] = to_string(scores["Prot"]["Defeat"]);
+	scoreMap[5]["replace"] = std::to_string(scores["Prot"]["Defeat"]);
 
 	for (size_t i = 0; i < scoreMap.size(); i++) {
 		std::string search = scoreMap[i]["search"];
