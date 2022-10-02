@@ -39,16 +39,15 @@ set_target_properties(
 
 
 # obs-sc2switcher-specific stuff
-set( CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -stdlib=libc++")
+
+target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_17)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt::GuiPrivate)
 
 include_directories(${OBS_JANSSON_INCLUDE_DIRS})
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
 	${OBS_JANSSON_IMPORT}
 	${LIBCURL_LIBRARIES}
 )
-
-find_package(Qt6 REQUIRED COMPONENTS Gui)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt6::Gui)
 
 # end obs-sc2switcher-specific stuff
 
