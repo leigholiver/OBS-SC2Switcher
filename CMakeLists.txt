@@ -18,9 +18,7 @@ set(LINUX_MAINTAINER_EMAIL "leigh@leigholiver.com")
 
 
 # obs-sc2switcher-specific stuff
-
-target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_17)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt::GuiPrivate)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -stdlib=libc++")
 
 include_directories(${OBS_JANSSON_INCLUDE_DIRS})
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
@@ -44,8 +42,8 @@ find_package(obs-frontend-api REQUIRED)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE OBS::obs-frontend-api)
 
 # Uncomment those lines if you want to use Qt in your plugin
-find_qt(COMPONENTS Widgets Core)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt::Core Qt::Widgets)
+find_qt(COMPONENTS Widgets Core Gui)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt::Core Qt::Widgets Qt::GuiPrivate)
 set_target_properties(
   ${CMAKE_PROJECT_NAME}
   PROPERTIES AUTOMOC ON
