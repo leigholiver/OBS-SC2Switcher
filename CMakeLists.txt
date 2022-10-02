@@ -39,7 +39,7 @@ set_target_properties(
 
 
 # obs-sc2switcher-specific stuff
-set (CMAKE_CXX_STANDARD 17)
+set( CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -stdlib=libc++")
 
 include_directories(${OBS_JANSSON_INCLUDE_DIRS})
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
