@@ -39,6 +39,7 @@ set_target_properties(
 
 
 # obs-sc2switcher-specific stuff
+set (CMAKE_CXX_STANDARD 11)
 
 include_directories(${OBS_JANSSON_INCLUDE_DIRS})
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
@@ -93,7 +94,7 @@ elseif(OS_MACOS)
 
   # --- Linux-specific build settings and tasks ---
 else()
-  target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Wall -std=c++11 -stdlib=libc++)
+  target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Wall)
 endif()
 # --- End of section ---
 
