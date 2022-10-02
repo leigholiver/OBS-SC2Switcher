@@ -46,9 +46,9 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
 	${LIBCURL_LIBRARIES}
 )
 
+target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_17)
 find_package(Qt6 REQUIRED COMPONENTS Gui)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt6::Gui)
-target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_17)
 
 # end obs-sc2switcher-specific stuff
 
