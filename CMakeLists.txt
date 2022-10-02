@@ -16,6 +16,21 @@ set(MACOS_BUNDLEID "com.leigholiver.${CMAKE_PROJECT_NAME}")
 # Replace `me@contoso.com` with the maintainer email address you want to put in Linux packages
 set(LINUX_MAINTAINER_EMAIL "leigh@leigholiver.com")
 
+
+# obs-sc2switcher-specific stuff
+
+target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_17)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt::GuiPrivate)
+
+include_directories(${OBS_JANSSON_INCLUDE_DIRS})
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
+	${OBS_JANSSON_IMPORT}
+	${LIBCURL_LIBRARIES}
+)
+
+# end obs-sc2switcher-specific stuff
+
+
 # Add your custom source files here - header files are optional and only required for visibility
 # e.g. in Xcode or Visual Studio
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE src/plugin-main.c)
@@ -36,21 +51,6 @@ set_target_properties(
   PROPERTIES AUTOMOC ON
              AUTOUIC ON
              AUTORCC ON)
-
-
-# obs-sc2switcher-specific stuff
-
-target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_17)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt::GuiPrivate)
-
-include_directories(${OBS_JANSSON_INCLUDE_DIRS})
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
-	${OBS_JANSSON_IMPORT}
-	${LIBCURL_LIBRARIES}
-)
-
-# end obs-sc2switcher-specific stuff
-
 
 configure_file(src/plugin-macros.h.in ${CMAKE_SOURCE_DIR}/src/plugin-macros.generated.h)
 
