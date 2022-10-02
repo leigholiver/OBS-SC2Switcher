@@ -20,9 +20,6 @@ with this program. If not, see <https://www.gnu.org/licenses/>
 
 #include "plugin-macros.generated.h"
 
-OBS_DECLARE_MODULE()
-OBS_MODULE_USE_DEFAULT_LOCALE(PLUGIN_NAME, "en-US")
-
 #include <QAction>
 #include <QMainWindow>
 
@@ -33,6 +30,9 @@ OBS_MODULE_USE_DEFAULT_LOCALE(PLUGIN_NAME, "en-US")
 #include "ScoreTracker.h"
 #include "Webhook.h"
 #include "forms/SettingsDialog.h"
+
+OBS_DECLARE_MODULE()
+OBS_MODULE_USE_DEFAULT_LOCALE(PLUGIN_NAME, "en-US")
 
 SceneSwitcher* sw = nullptr;
 ScoreTracker* st = nullptr;
