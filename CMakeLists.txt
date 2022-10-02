@@ -37,12 +37,18 @@ set_target_properties(
              AUTOUIC ON
              AUTORCC ON)
 
+
 # obs-sc2switcher-specific stuff
+
 include_directories(${OBS_JANSSON_INCLUDE_DIRS})
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
 	${OBS_JANSSON_IMPORT}
 	${LIBCURL_LIBRARIES}
 )
+
+find_package(Qt6 REQUIRED COMPONENTS Gui)
+target_link_libraries(mytarget PRIVATE Qt6::Gui)
+
 # end obs-sc2switcher-specific stuff
 
 
