@@ -1,9 +1,24 @@
 project(sc2switcher3)
-include_directories(${OBS_JANSSON_INCLUDE_DIRS})
 
-set(sc2switcher3_HEADERS
-	${sc2switcher3_HEADERS}
-	SC2Data.h
+add_library(sc2switcher3 MODULE)
+add_library(OBS::sc2switcher3 ALIAS sc2switcher3)
+
+find_qt(COMPONENTS Widgets)
+find_package(CURL REQUIRED)
+
+set_target_properties(
+  sc2switcher3
+  PROPERTIES AUTOMOC ON
+             AUTOUIC ON
+             AUTORCC ON
+             AUTOUIC_SEARCH_PATHS "forms")
+
+target_sources(sc2switcher3 PRIVATE forms/SettingsDialog.ui)
+
+target_sources(
+  sc2switcher3
+  PRIVATE
+  	SC2Data.h
 	Observer.h
 	SC2State.h
 	Constants.h
@@ -11,44 +26,43 @@ set(sc2switcher3_HEADERS
 	ScoreTracker.h
 	Webhook.h
 	Config.h
-	forms/SettingsDialog.h
+	SettingsDialog.h
 	log.h
-	)
-set(sc2switcher3_SOURCES
-	${sc2switcher3_SOURCES}
-	sc2switcher.cpp
+  	sc2switcher.cpp
 	SC2Data.cpp
 	SC2State.cpp
 	SceneSwitcher.cpp
 	ScoreTracker.cpp
 	Webhook.cpp
 	Config.cpp
-	forms/SettingsDialog.cpp
-	)
-set(sc2switcher3_UI
-	${sc2switcher3_UI}
+	SettingsDialog.cpp
 	forms/SettingsDialog.ui
-	)
-set(sc2switcher3_PLATFORM_LIBS
-	${OBS_JANSSON_IMPORT}
-	)
+)	
 
-qt5_wrap_ui(sc2switcher3_UI_HEADERS
-	${sc2switcher3_UI}
-	${sc2switcher3_PLATFORM_UI})
-
-add_library(sc2switcher3 MODULE
-	${sc2switcher3_HEADERS}
-	${sc2switcher3_SOURCES}
-	${sc2switcher3_UI_HEADERS}
-	${sc2switcher3_PLATFORM_SOURCES}
-	${sc2switcher3_PLATFORM_HEADERS}
-	)
 target_link_libraries(sc2switcher3
-	${sc2switcher3_PLATFORM_LIBS}
 	obs-frontend-api
-	Qt5::Widgets
-	${LIBCURL_LIBRARIES}
+	jansson
+	Qt::Widgets
+	CURL::libcurl
 	libobs)
 
-install_obs_plugin(sc2switcher3)
+
+set(MODULE_DESCRIPTION "OBS SC2 Switcher UI")
+configure_file(${CMAKE_SOURCE_DIR}/cmake/bundle/windows/obs-module.rc.in
+			 sc2switcher3.rc)
+target_sources(sc2switcher3 PRIVATE sc2switcher3.rc)
+
+	
+get_target_property(_SOURCES sc2switcher3 SOURCES)
+set(_UI ${_SOURCES})
+list(FILTER _UI INCLUDE REGEX ".*\\.ui?")
+
+source_group(
+  TREE "${CMAKE_CURRENT_SOURCE_DIR}/forms"
+  PREFIX "UI Files"
+  FILES ${_UI})
+unset(_SOURCES)
+unset(_UI)
+
+setup_plugin_target(sc2switcher3)
+

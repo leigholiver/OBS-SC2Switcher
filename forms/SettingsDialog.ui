@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>590</width>
+    <width>640</width>
     <height>419</height>
    </rect>
   </property>
@@ -18,12 +18,12 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>591</width>
+     <width>641</width>
      <height>421</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>5</number>
    </property>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
@@ -32,7 +32,7 @@
     <widget class="QWidget" name="verticalLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>40</x>
+       <x>60</x>
        <y>40</y>
        <width>511</width>
        <height>331</height>
@@ -78,7 +78,6 @@
          <widget class="QLabel" name="label_3">
           <property name="font">
            <font>
-            <weight>75</weight>
             <bold>true</bold>
            </font>
           </property>
@@ -163,7 +162,7 @@
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
-       <x>40</x>
+       <x>70</x>
        <y>150</y>
        <width>501</width>
        <height>171</height>
@@ -207,7 +206,7 @@
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>170</x>
        <y>20</y>
        <width>301</width>
        <height>100</height>
@@ -252,7 +251,7 @@
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>60</x>
        <y>30</y>
        <width>521</width>
        <height>301</height>
@@ -362,7 +361,7 @@
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>50</x>
        <y>10</y>
        <width>251</width>
        <height>351</height>
@@ -424,7 +423,7 @@
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
-       <x>310</x>
+       <x>340</x>
        <y>10</y>
        <width>241</width>
        <height>351</height>
@@ -491,7 +490,7 @@
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
-       <x>270</x>
+       <x>300</x>
        <y>20</y>
        <width>261</width>
        <height>151</height>
@@ -524,7 +523,7 @@
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
-       <x>50</x>
+       <x>80</x>
        <y>20</y>
        <width>191</width>
        <height>116</height>
@@ -564,7 +563,7 @@
     <widget class="QLabel" name="scoresLabel">
      <property name="geometry">
       <rect>
-       <x>380</x>
+       <x>410</x>
        <y>200</y>
        <width>141</width>
        <height>151</height>
@@ -580,7 +579,7 @@
     <widget class="QWidget" name="horizontalLayoutWidget_3">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>50</x>
        <y>200</y>
        <width>321</width>
        <height>175</height>
@@ -879,7 +878,7 @@
     <widget class="QCheckBox" name="webhookEnabled">
      <property name="geometry">
       <rect>
-       <x>70</x>
+       <x>100</x>
        <y>30</y>
        <width>191</width>
        <height>22</height>
@@ -892,7 +891,7 @@
     <widget class="QWidget" name="horizontalLayoutWidget_8">
      <property name="geometry">
       <rect>
-       <x>70</x>
+       <x>100</x>
        <y>60</y>
        <width>431</width>
        <height>41</height>
@@ -922,7 +921,7 @@
     <widget class="QWidget" name="verticalLayoutWidget_3">
      <property name="geometry">
       <rect>
-       <x>70</x>
+       <x>100</x>
        <y>150</y>
        <width>431</width>
        <height>221</height>
@@ -944,7 +943,7 @@
     <widget class="QWidget" name="horizontalLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>170</x>
        <y>110</y>
        <width>271</width>
        <height>36</height>

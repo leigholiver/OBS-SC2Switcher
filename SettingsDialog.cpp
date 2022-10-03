@@ -396,7 +396,7 @@ void SettingsDialog::on_removeUsernameButton_clicked() {
 
 void SettingsDialog::on_userNames_itemSelectionChanged() {
 	if(!isLoading) {
-		if (ui->userNames->currentItem() != NULL && ui->userNames->currentItem()->text() != NULL) {
+		if (ui->userNames->currentItem() != NULL && ui->userNames->currentItem()->text().isNull() == false ) {
 			ui->usernameLine->setText(ui->userNames->currentItem()->text());
 		}
 	}
@@ -404,7 +404,7 @@ void SettingsDialog::on_userNames_itemSelectionChanged() {
 
 void SettingsDialog::on_recentUsernames_itemSelectionChanged() {
 	if(!isLoading) {
-		if (ui->recentUsernames->currentItem() != NULL && ui->recentUsernames->currentItem()->text() != NULL) {
+		if (ui->recentUsernames->currentItem() != NULL && ui->recentUsernames->currentItem()->text().isNull() == false) {
 			ui->usernameLine->setText(ui->recentUsernames->currentItem()->text());
 		}
 	}
@@ -656,7 +656,7 @@ void SettingsDialog::on_removeURLButton_clicked() {
 
 void SettingsDialog::on_webhookURLList_itemSelectionChanged() {
 	if(!isLoading) {
-		if (ui->webhookURLList->currentItem() != NULL && ui->webhookURLList->currentItem()->text() != NULL) {
+		if (ui->webhookURLList->currentItem() != NULL && ui->webhookURLList->currentItem()->text().isNull() == false) {
 			ui->webhookEnterGame->setText(ui->webhookURLList->currentItem()->text());
 		}
 	}
