@@ -8,7 +8,7 @@
 #include "SceneSwitcher.h"
 #include "ScoreTracker.h"
 #include "Webhook.h"
-#include "forms/SettingsDialog.h"
+#include "SettingsDialog.h"
 
 OBS_DECLARE_MODULE()
 
