@@ -84,7 +84,7 @@ void Config::checkForUpdates() {
 	json_t* url = json_object_get(root, "tag_name");
 	const char *urlText = json_string_value(url);
 	float latestVer = std::stof(urlText);
-	float currentVer = static_cast<float>(PLUGIN_VERSION);
+	float currentVer = std::stof(PLUGIN_VERSION);
 	if(latestVer > currentVer) {
 		json_t* url2 = json_object_get(root, "html_url");
 		const char *urlText2 = json_string_value(url2);
