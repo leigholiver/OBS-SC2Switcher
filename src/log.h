@@ -6,9 +6,6 @@
 static void s2log(std::string message) {
 	Config* cfg = Config::Current();
 	if(cfg->logging) {
-		blog(
-			LOG_INFO,
-			sprintf("[sc2switcher] %s", message.c_str()).c_str()
-		);
+		blog(message.c_str());
 	}
 }
