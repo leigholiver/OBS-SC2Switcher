@@ -2,6 +2,8 @@
 #include <jansson.h>
 #include "Config.h"
 
+#define PLUGIN_VERSION "@CMAKE_PROJECT_VERSION@"
+
 Config* Config::_instance = new Config();
 
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
@@ -82,7 +84,7 @@ void Config::checkForUpdates() {
 	json_t* url = json_object_get(root, "tag_name");
 	const char *urlText = json_string_value(url);
 	float latestVer = std::stof(urlText);
-	float currentVer = static_cast<float>(1.0);
+	float currentVer = static_cast<float>(PLUGIN_VERSION);
 	if(latestVer > currentVer) {
 		json_t* url2 = json_object_get(root, "html_url");
 		const char *urlText2 = json_string_value(url2);
