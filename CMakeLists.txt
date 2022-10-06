@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16...3.21)
 
 # Change obs-sc2switcher to your plugin's name in a machine-readable format (e.g.:
 # obs-myawesomeplugin) and set
-project(obs-sc2switcher VERSION 0.1.0)
+project(obs-sc2switcher VERSION 1.0)
 add_library(${CMAKE_PROJECT_NAME} MODULE)
 
 # Replace `Your Name Here` with the name (yours or your organization's) you want to see as the
@@ -18,20 +18,49 @@ set(LINUX_MAINTAINER_EMAIL "leigh@leigholiver.com")
 
 
 # obs-sc2switcher-specific stuff
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -stdlib=libc++")
-
-include_directories(${OBS_JANSSON_INCLUDE_DIRS})
+find_package(CURL REQUIRED)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
-	${OBS_JANSSON_IMPORT}
-	${LIBCURL_LIBRARIES}
+	jansson
+	Qt::Widgets
+	CURL::libcurl
 )
+
+target_sources(
+  ${CMAKE_PROJECT_NAME} PRIVATE
+  src/SC2Data.h
+	src/Observer.h
+	src/SC2State.h
+	src/Constants.h
+	src/SceneSwitcher.h
+	src/ScoreTracker.h
+	src/Webhook.h
+	src/Config.h
+	src/SettingsDialog.h
+  src/log.h
+  src/sc2switcher.cpp
+	src/SC2Data.cpp
+	src/SC2State.cpp
+	src/SceneSwitcher.cpp
+	src/ScoreTracker.cpp
+	src/Webhook.cpp
+	src/Config.cpp
+	src/SettingsDialog.cpp
+	src/forms/SettingsDialog.ui
+)
+
+get_target_property(_SOURCES ${CMAKE_PROJECT_NAME} SOURCES)
+set(_UI ${_SOURCES})
+list(FILTER _UI INCLUDE REGEX ".*\\.ui?")
+
+source_group(
+  TREE "${CMAKE_CURRENT_SOURCE_DIR}/forms"
+  PREFIX "UI Files"
+  FILES ${_UI})
+unset(_SOURCES)
+unset(_UI)
 
 # end obs-sc2switcher-specific stuff
 
-
-# Add your custom source files here - header files are optional and only required for visibility
-# e.g. in Xcode or Visual Studio
-target_sources(${CMAKE_PROJECT_NAME} PRIVATE src/plugin-main.c)
 
 # Import libobs as main plugin dependency
 find_package(libobs REQUIRED)
@@ -43,12 +72,13 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE OBS::obs-frontend-api)
 
 # Uncomment those lines if you want to use Qt in your plugin
 find_qt(COMPONENTS Widgets Core Gui)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt::Core Qt::Widgets Qt::GuiPrivate)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt::Core Qt::Widgets)
 set_target_properties(
   ${CMAKE_PROJECT_NAME}
   PROPERTIES AUTOMOC ON
              AUTOUIC ON
-             AUTORCC ON)
+             AUTORCC ON
+             AUTOUIC_SEARCH_PATHS "forms")
 
 configure_file(src/plugin-macros.h.in ${CMAKE_SOURCE_DIR}/src/plugin-macros.generated.h)
 

@@ -29,7 +29,7 @@ with this program. If not, see <https://www.gnu.org/licenses/>
 #include "SceneSwitcher.h"
 #include "ScoreTracker.h"
 #include "Webhook.h"
-#include "forms/SettingsDialog.h"
+#include "SettingsDialog.h"
 
 OBS_DECLARE_MODULE()
 OBS_MODULE_USE_DEFAULT_LOCALE(PLUGIN_NAME, "en-US")
@@ -55,7 +55,7 @@ bool obs_module_load(void) {
 
 	action->connect(action, &QAction::triggered, cb);
 
-	// sc2 
+	// sc2
 	SC2Data::Instance = new SC2Data();
 
 	// listeners
