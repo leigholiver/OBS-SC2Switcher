@@ -78,7 +78,7 @@ set_target_properties(
   PROPERTIES AUTOMOC ON
              AUTOUIC ON
              AUTORCC ON
-             AUTOUIC_SEARCH_PATHS "forms")
+             AUTOUIC_SEARCH_PATHS "src/forms")
 
 configure_file(src/plugin-macros.h.in ${CMAKE_SOURCE_DIR}/src/plugin-macros.generated.h)
 
