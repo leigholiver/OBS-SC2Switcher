@@ -37,7 +37,7 @@ target_sources(
 	src/Config.h
 	src/SettingsDialog.h
   src/log.h
-  src/sc2switcher.cpp
+  src/plugin-main.cpp
 	src/SC2Data.cpp
 	src/SC2State.cpp
 	src/SceneSwitcher.cpp
@@ -53,7 +53,7 @@ set(_UI ${_SOURCES})
 list(FILTER _UI INCLUDE REGEX ".*\\.ui?")
 
 source_group(
-  TREE "${CMAKE_CURRENT_SOURCE_DIR}/forms"
+  TREE "${CMAKE_CURRENT_SOURCE_DIR}/src/forms"
   PREFIX "UI Files"
   FILES ${_UI})
 unset(_SOURCES)
