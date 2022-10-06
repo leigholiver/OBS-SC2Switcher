@@ -6,6 +6,6 @@
 static void s2log(std::string message) {
 	Config* cfg = Config::Current();
 	if(cfg->logging) {
-		blog(message.c_str());
+		blog(LOG_INFO, message.c_str());
 	}
 }
