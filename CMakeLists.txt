@@ -19,7 +19,7 @@ set(LINUX_MAINTAINER_EMAIL "leigh@leigholiver.com")
 
 # obs-sc2switcher-specific stuff
 find_package(CURL REQUIRED)
-find_package(jansson REQUIRED)
+find_package(Jansson REQUIRED)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
 	jansson
 	Qt::Widgets
