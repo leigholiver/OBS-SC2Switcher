@@ -244,4 +244,5 @@ Usage: %B${functrace[1]%:*}%b <option> [<options>]
   popd
 }
 
+port install jansson
 build ${@}
