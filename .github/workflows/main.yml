@@ -144,7 +144,7 @@ jobs:
 
       - name: Install jansson
         run: |
-          brew install jansson
+          brew install jansson --build-from-source
           ls -lah /usr/local/Cellar/jansson/2.14
           print "PATH=/usr/local/Cellar/jansson/2.14/lib:$PATH" >> $GITHUB_ENV
           print "LIBRARY_PATH=$LIBRARY_PATH:/usr/local/Cellar/jansson/2.14/lib" >> $GITHUB_ENV
