@@ -244,5 +244,10 @@ Usage: %B${functrace[1]%:*}%b <option> [<options>]
   popd
 }
 
+# jansson stuff
+wget https://github.com/macports/macports-base/releases/download/v2.7.1/MacPorts-2.7.1-11-BigSur.pkg
+sudo installer -pkg ./MacPorts-2.7.1-11-BigSur.pkg -target /
 port install jansson
+# end jansson stuff
+
 build ${@}
