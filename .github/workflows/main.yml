@@ -143,7 +143,10 @@ jobs:
           print "CODESIGN_IDENT_INSTALLER=${{ secrets.MACOS_SIGNING_INSTALLER_IDENTITY }}" >> $GITHUB_ENV
 
       - name: Install jansson
-        run: brew install jansson
+        run: |
+          brew install jansson
+          print "PATH=/usr/local/Cellar/jansson/2.14:$PATH" >> $GITHUB_ENV
+          print "LIBRARY_PATH="$LIBRARY_PATH:/usr/local/Cellar/jansson/2.14" >> $GITHUB_ENV
 
       - name: Build Plugin
         uses: ./plugin/.github/actions/build-plugin
