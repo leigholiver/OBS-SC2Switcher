@@ -24,6 +24,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
 	jansson
 	Qt::Widgets
 	CURL::libcurl
+  ${JANSSON_LIBRARIES}
 )
 
 target_sources(
