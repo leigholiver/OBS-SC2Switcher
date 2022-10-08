@@ -109,9 +109,6 @@ jobs:
           print "::set-output name=ccacheDate::$(date +"%Y-%m-%d")"
           print "::set-output name=commitHash::${"$(git rev-parse HEAD)"[0,9]}"
 
-          # ensure jansson is installed
-          brew install jansson
-
       - name: Restore Compilation Cache
         id: ccache-cache
         uses: actions/cache@v3
