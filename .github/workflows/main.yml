@@ -146,8 +146,8 @@ jobs:
         run: |
           brew install jansson
           ls -lah /usr/local/Cellar/jansson/2.14
-          print "PATH=/usr/local/Cellar/jansson/2.14:$PATH" >> $GITHUB_ENV
-          print "DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/usr/local/Cellar/jansson/2.14" >> $GITHUB_ENV
+          print "PATH=/usr/local/Cellar/jansson/2.14/lib:$PATH" >> $GITHUB_ENV
+          print "DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/usr/local/Cellar/jansson/2.14/lib" >> $GITHUB_ENV
 
       - name: Build Plugin
         uses: ./plugin/.github/actions/build-plugin
