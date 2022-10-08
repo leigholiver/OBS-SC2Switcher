@@ -142,6 +142,9 @@ jobs:
           print "CODESIGN_IDENT=${{ secrets.MACOS_SIGNING_APPLICATION_IDENTITY }}" >> $GITHUB_ENV
           print "CODESIGN_IDENT_INSTALLER=${{ secrets.MACOS_SIGNING_INSTALLER_IDENTITY }}" >> $GITHUB_ENV
 
+      - name: Install jansson
+        run: brew install jansson
+
       - name: Build Plugin
         uses: ./plugin/.github/actions/build-plugin
         with:

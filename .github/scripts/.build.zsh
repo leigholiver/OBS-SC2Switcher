@@ -244,10 +244,4 @@ Usage: %B${functrace[1]%:*}%b <option> [<options>]
   popd
 }
 
-# jansson stuff
-wget https://github.com/macports/macports-base/releases/download/v2.7.2/MacPorts-2.7.2-12-Monterey.pkg
-sudo installer -pkg ./MacPorts-2.7.2-12-Monterey.pkg -target /
-sudo port install jansson
-# end jansson stuff
-
 build ${@}
