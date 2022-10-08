@@ -550,7 +550,6 @@ else()
         ${CMAKE_PROJECT_NAME}
         PRIVATE /MP
                 /W3
-                /WX
                 /wd4201
                 "$<$<CONFIG:RELWITHDEBINFO>:/Ob2>"
                 "$<$<CONFIG:DEBUG>:/DDEBUG=1;/D_DEBUG=1>"
@@ -575,7 +574,6 @@ else()
         ${CMAKE_PROJECT_NAME}
         PRIVATE
         "LINKER:/OPT:REF"
-        "LINKER:/WX"
         "$<$<NOT:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>>:LINKER\:/SAFESEH\:NO>"
         "$<$<CONFIG:DEBUG>:LINKER\:/INCREMENTAL\:NO>"
         "$<$<CONFIG:RELWITHDEBINFO>:LINKER\:/INCREMENTAL\:NO;/OPT\:ICF>")
