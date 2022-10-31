@@ -17,6 +17,28 @@ set(MACOS_BUNDLEID "com.leigholiver.${CMAKE_PROJECT_NAME}")
 set(LINUX_MAINTAINER_EMAIL "leigh@leigholiver.com")
 
 
+# Import libobs as main plugin dependency
+find_package(libobs REQUIRED)
+include(cmake/ObsPluginHelpers.cmake)
+
+# Uncomment these lines if you want to use the OBS Frontend API in your plugin
+find_package(obs-frontend-api REQUIRED)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE OBS::obs-frontend-api)
+
+# Uncomment those lines if you want to use Qt in your plugin
+find_qt(COMPONENTS Widgets Core)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt::Core Qt::Widgets)
+set_target_properties(
+  ${CMAKE_PROJECT_NAME}
+  PROPERTIES AUTOMOC ON
+             AUTOUIC ON
+             AUTORCC ON
+             AUTOUIC_SEARCH_PATHS "src/forms")
+
+configure_file(src/plugin-macros.h.in ${CMAKE_SOURCE_DIR}/src/plugin-macros.generated.h)
+
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE src/plugin-macros.generated.h)
+
 # obs-sc2switcher-specific stuff
 find_package(CURL REQUIRED)
 find_package(jansson QUIET)
@@ -61,28 +83,6 @@ unset(_UI)
 
 # end obs-sc2switcher-specific stuff
 
-
-# Import libobs as main plugin dependency
-find_package(libobs REQUIRED)
-include(cmake/ObsPluginHelpers.cmake)
-
-# Uncomment these lines if you want to use the OBS Frontend API in your plugin
-find_package(obs-frontend-api REQUIRED)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE OBS::obs-frontend-api)
-
-# Uncomment those lines if you want to use Qt in your plugin
-find_qt(COMPONENTS Widgets Core Gui)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt::Core Qt::Widgets)
-set_target_properties(
-  ${CMAKE_PROJECT_NAME}
-  PROPERTIES AUTOMOC ON
-             AUTOUIC ON
-             AUTORCC ON
-             AUTOUIC_SEARCH_PATHS "src/forms")
-
-configure_file(src/plugin-macros.h.in ${CMAKE_SOURCE_DIR}/src/plugin-macros.generated.h)
-
-target_sources(${CMAKE_PROJECT_NAME} PRIVATE src/plugin-macros.generated.h)
 
 # /!\ TAKE NOTE: No need to edit things past this point /!\
 
