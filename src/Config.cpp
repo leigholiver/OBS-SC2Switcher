@@ -2,6 +2,8 @@
 #include <jansson.h>
 #include "Config.h"
 
+#define PLUGIN_VERSION "@CMAKE_PROJECT_VERSION@"
+
 Config* Config::_instance = new Config();
 
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
@@ -10,7 +12,7 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
 	return size * nmemb;
 }
 
-Config::Config() : 
+Config::Config() :
 	ipAddr(std::string("localhost")),
 	scoreString(std::string("vT: ${tw}-${tl}\nvZ: ${zw}-${zl}\nvP: ${pw}-${pl}")),
 	isRunning(false),
@@ -51,18 +53,18 @@ void Config::checkForUpdates() {
 	CURL *curl;
 	CURLcode res;
  	std::string response;
- 	
+
  	curl = curl_easy_init();
 	if (curl) {
 		std::string reqURL = "https://api.github.com/repos/leigholiver/OBS-SC2Switcher/releases/latest";
 
 		struct curl_slist *chunk = NULL;
- 
+
 		curl_easy_setopt(curl, CURLOPT_URL, reqURL.c_str());
 		curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 500);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
-		
+
 		chunk = curl_slist_append(chunk, "User-Agent: OBS-SC2Switcher");
 		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
 
@@ -82,7 +84,7 @@ void Config::checkForUpdates() {
 	json_t* url = json_object_get(root, "tag_name");
 	const char *urlText = json_string_value(url);
 	float latestVer = std::stof(urlText);
-	float currentVer = 0.98;
+	float currentVer = std::stof(PLUGIN_VERSION);
 	if(latestVer > currentVer) {
 		json_t* url2 = json_object_get(root, "html_url");
 		const char *urlText2 = json_string_value(url2);

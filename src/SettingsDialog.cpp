@@ -11,12 +11,12 @@ Config* config = Config::Current();
 
 SettingsDialog::SettingsDialog(QWidget* parent) :
     QDialog(parent, Qt::Dialog),
-    ui(new Ui::SettingsDialog) 
+    ui(new Ui::SettingsDialog)
 {
 	isLoading = true;
     ui->setupUi(this);
 
-    // fill them boxes 
+    // fill them boxes
 	ui->inGameScene->addItem("");
 	ui->outGameScene->addItem("");
 	ui->replayScene->addItem("");
@@ -107,39 +107,39 @@ SettingsDialog::SettingsDialog(QWidget* parent) :
 		ui->switcherEnabled->setChecked(true);
 	}
 	else {
-		ui->switcherEnabled->setChecked(false);	
+		ui->switcherEnabled->setChecked(false);
 	}
 	if(config->scoresEnabled) {
 		ui->scoresEnabled->setChecked(true);
 	}
 	else {
-		ui->scoresEnabled->setChecked(false);	
+		ui->scoresEnabled->setChecked(false);
 	}
 	if(config->popupsEnabled) {
 		ui->popupsEnabled->setChecked(true);
 	}
 	else {
-		ui->popupsEnabled->setChecked(false);	
+		ui->popupsEnabled->setChecked(false);
 	}
 	if(config->clearSettings) {
 		ui->clearSettings->setChecked(true);
 	}
 	else {
-		ui->clearSettings->setChecked(false);	
+		ui->clearSettings->setChecked(false);
 	}
-	
+
 	if(config->logging) {
 		ui->logging->setChecked(true);
 	}
 	else {
-		ui->logging->setChecked(false);	
+		ui->logging->setChecked(false);
 	}
 
 	if(config->switchOnLoad) {
 		ui->switchOnLoad->setChecked(true);
 	}
 	else {
-		ui->switchOnLoad->setChecked(false);	
+		ui->switchOnLoad->setChecked(false);
 	}
 
 	if(config->webhookEnabled) {
@@ -170,7 +170,7 @@ void SettingsDialog::on_inGameScene_currentTextChanged(const QString& text) {
 	if(!isLoading) {
 		obs_source_t* scene = obs_get_source_by_name(text.toUtf8().constData());
 		obs_weak_source_t* ws = obs_source_get_weak_source(scene);
-		
+
 		config->inGameScene = ws;
 
 		obs_weak_source_release(ws);
@@ -396,7 +396,7 @@ void SettingsDialog::on_removeUsernameButton_clicked() {
 
 void SettingsDialog::on_userNames_itemSelectionChanged() {
 	if(!isLoading) {
-		if (ui->userNames->currentItem() != NULL && ui->userNames->currentItem()->text() != NULL) {
+		if (ui->userNames->currentItem() != NULL && ui->userNames->currentItem()->text().isNull() == false ) {
 			ui->usernameLine->setText(ui->userNames->currentItem()->text());
 		}
 	}
@@ -404,7 +404,7 @@ void SettingsDialog::on_userNames_itemSelectionChanged() {
 
 void SettingsDialog::on_recentUsernames_itemSelectionChanged() {
 	if(!isLoading) {
-		if (ui->recentUsernames->currentItem() != NULL && ui->recentUsernames->currentItem()->text() != NULL) {
+		if (ui->recentUsernames->currentItem() != NULL && ui->recentUsernames->currentItem()->text().isNull() == false) {
 			ui->usernameLine->setText(ui->recentUsernames->currentItem()->text());
 		}
 	}
@@ -656,7 +656,7 @@ void SettingsDialog::on_removeURLButton_clicked() {
 
 void SettingsDialog::on_webhookURLList_itemSelectionChanged() {
 	if(!isLoading) {
-		if (ui->webhookURLList->currentItem() != NULL && ui->webhookURLList->currentItem()->text() != NULL) {
+		if (ui->webhookURLList->currentItem() != NULL && ui->webhookURLList->currentItem()->text().isNull() == false) {
 			ui->webhookEnterGame->setText(ui->webhookURLList->currentItem()->text());
 		}
 	}
